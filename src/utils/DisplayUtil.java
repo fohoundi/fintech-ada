@@ -10,6 +10,7 @@ public final class DisplayUtil {
         System.out.println(message);
     }
 
+    // Animation de chargement
     public static void loading(String message) {
         char[] spinner = {'|', '/', '-', '\\'};
         int index = 0;
@@ -28,12 +29,14 @@ public final class DisplayUtil {
             }
         }
 
-        //System.out.print("\r" + message + " ok \n");
-
         // Effacer la ligne avec des espaces
         String blank = " ".repeat(fullLength);
         System.out.print("\r" + blank + "\r"); // Efface et ramène au début
     }
 
 
+    public static void successMsg(){
+        DisplayUtil.display("Compte cree avec succes!!!");
+        DisplayUtil.display("///////////////////////////////////////");
+    }
 }

@@ -1,9 +1,7 @@
 package model;
 
 import model.enumaration.compteType;
-import utils.Stock;
-
-import java.util.List;
+import data.Stock;
 
 
 public class Marchant  extends User{

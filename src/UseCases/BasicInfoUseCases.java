@@ -6,19 +6,20 @@ import model.Customer;
 import model.Marchant;
 import model.enumaration.compteType;
 import utils.DisplayUtil;
-import utils.Stock;
+import data.Stock;
 
 import java.util.List;
 import java.util.Scanner;
 
 public  class BasicInfoUseCases {
 
+    // methode d'authentification
+    //verifie que le login et le mot de passe sont present dans la liste
     public static BasicInfo authentificate(String login, String mdp){
 
         List<BasicInfo> Users = Stock.getInfoList();
         for(BasicInfo user : Users){
             if (user.getUserAccount().getLogin().equals(login) && user.getUserAccount().getPassword().equals(mdp)){
-
                 return user;
             }
         }
@@ -26,7 +27,7 @@ public  class BasicInfoUseCases {
     }
 
 
-
+    // methode de login : defini le user comme etant connecte
     public static  BasicInfo login(){
         final Scanner scanner = new Scanner(System.in);
 
@@ -50,7 +51,7 @@ public  class BasicInfoUseCases {
 
 
 
-
+    // inscription d un user ( tout type
     public static void register(){
         final Scanner scanner = new Scanner(System.in);
 

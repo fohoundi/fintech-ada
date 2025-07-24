@@ -1,4 +1,4 @@
-package utils;
+package data;
 
 import model.*;
 import model.enumaration.compteType;
@@ -19,6 +19,7 @@ public class Stock {
 
     private static final List<BasicInfo> infoList = new ArrayList<>();
 
+
     // --- User ---
     public static List<User> getUserList() {
         return userList;
@@ -31,6 +32,10 @@ public class Stock {
     // --- Info ---
     public static List<BasicInfo> getInfoList() {
         return infoList;
+    }
+
+    public static void deleteInfo(BasicInfo user){
+        infoList.remove(user);
     }
 
     public static void addUser(User user) {

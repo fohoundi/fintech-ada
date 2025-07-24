@@ -2,16 +2,63 @@ package UseCases;
 
 import model.Admin;
 import model.BasicInfo;
+import model.Customer;
 import model.User;
 import model.enumaration.compteType;
 import utils.DisplayUtil;
 import utils.InputUtils;
+import data.Stock;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Menu {
 
+    //creation de l admin et d'un client a l'initialisation de l'app
+    public static void initApp(){
+        Admin superAdmin = new Admin(compteType.ADMIN,"admin", "admin","Behiblo","fohoundi","0798673112","fohoundibehiblo@gmail.com");
+        Customer line = new Customer(compteType.CUSTOMER,"lino","lino0","kouassi","Line","07070707","line@kassi");
+
+        Stock.addInfo(superAdmin);
+        Stock.addInfo(line);
+
+    }
+
+    public static boolean mainMenu(Scanner scanner){
+
+        DisplayUtil.display("=== BIENVENU SUR FINTECH ADA ! === ");
+        DisplayUtil.display("=== Choisissez une option :=== ");
+        DisplayUtil.display("1 | s'inscrire ");
+        DisplayUtil.display("2 | s'authentifier  ");
+        DisplayUtil.display("0 | Quitter  ");
+
+        String choix = String.valueOf(scanner.nextInt());
+        scanner.nextLine();
+
+        DisplayUtil.loading("chargement");
+        BasicInfo user = null;
+        switch (choix){
+            case ("1"):{
+                BasicInfoUseCases.register();
+            }
+            case ("2"):{
+                while (user == null){
+                    user = BasicInfoUseCases.login();
+                }
+                showMenu(user);
+                break;
+            }
+            case ("0") :{
+                DisplayUtil.display("Merci d’avoir utilisé FinTech ADA. À bientôt !");
+                return false;
+            }
+            default:
+                DisplayUtil.display("Option invalide. Veuillez réessayer.");break;
+        }
+        return true;
+    }
+
+    //Afficher le menu Principal
     public static void showMenu(BasicInfo user){
         compteType accountType = user.getUserAccount().getCompteType();
 
@@ -22,6 +69,7 @@ public class Menu {
 
     }
 
+    //menu de l'administrateur
     public static void menuAdmin(Admin admin){
         final Scanner scanner = new Scanner(System.in);
         boolean actif = true;
@@ -31,9 +79,9 @@ public class Menu {
             DisplayUtil.display("1 | Voir la liste des clients ");
             DisplayUtil.display("2 | Voir la liste des Marchands ");
             DisplayUtil.display("3 | Ajouter un utilisateur ");
-            DisplayUtil.display("4 | Promouvoir un utilisateur");
-            DisplayUtil.display("5 | Supprimer un utilisateur");
-            DisplayUtil.display("6 | Me deconnecter");
+//            DisplayUtil.display("4 | Promouvoir un utilisateur");
+//            DisplayUtil.display("5 | Supprimer un utilisateur");
+            DisplayUtil.display("0 | Me deconnecter");
 
             String choix = scanner.nextLine();
             switch (choix){
@@ -52,7 +100,12 @@ public class Menu {
                     BasicInfoUseCases.register();
                     break;
                 }
-                case "6":{
+//                case "4":{
+//                    DisplayUtil.display("Entrez l'id de utilisateur que vous voulez rendre admin ");
+//                    String id =scanner.nextLine();
+//                    AdminUseCases.promoteUser(u);
+//                }
+                case "0":{
                     DisplayUtil.display("Merci d’avoir utilisé FinTech ADA. À bientôt !");
                     actif = false;
                     break;
@@ -65,6 +118,7 @@ public class Menu {
 
     }
 
+    //menu du marchand et du client
     public static void menuUser(User user){
         final Scanner scanner = new Scanner(System.in);
         boolean actif = true;
@@ -93,10 +147,14 @@ public class Menu {
 
     }
 
+
+    // Afficher le solde du user ( client et marchand
     public static String showBalance(User user){
         return InputUtils.format_FCFA(BalanceUseCases.getBalance(user));
     }
 
+
+    // Effectuer une transaction pour un user ( marchant et client
     public static void makeTransaction(User user ,String operation){
         final Scanner scanner = new Scanner(System.in);
 

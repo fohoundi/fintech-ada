@@ -1,40 +1,31 @@
 package model;
 
 import model.enumaration.compteType;
-import utils.Stock;
+import data.Stock;
+
+import java.util.Objects;
 
 public class BasicInfo {
 
+    private static Long compteurId = 0L; // partagé entre toutes les instances
+
     private final Long id;
 
-    private Long compteurId = 0L;
-
     private String lastName;
-
     private String firstName;
-
     private String phoneNumber;
-
     private String email;
 
     private UserAccount userAccount;
 
     public BasicInfo(compteType type, String login, String password, String lastName, String firstName, String phoneNumber, String email) {
-        this.id = compteurId++;
+        this.id = compteurId++; // ID unique pour chaque nouvel objet
         this.lastName = lastName;
         this.firstName = firstName;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.userAccount = new UserAccount(type,login,password,false);
+        this.userAccount = new UserAccount(type, login, password, false);
         Stock.addInfo(this);
-    }
-
-    public UserAccount getUserAccount() {
-        return userAccount;
-    }
-
-    public void setUserAccount(UserAccount userAccount) {
-        this.userAccount = userAccount;
     }
 
     public Long getId() {
@@ -51,14 +42,6 @@ public class BasicInfo {
 
     public String getFirstName() {
         return firstName;
-    }
-
-    public Boolean getConnected() {
-        return this.userAccount.getConnected();
-    }
-
-    public void setConnected(Boolean connected) {
-        this.userAccount.setConnected(connected);
     }
 
     public void setFirstName(String firstName) {
@@ -81,5 +64,34 @@ public class BasicInfo {
         this.email = email;
     }
 
+    public UserAccount getUserAccount() {
+        return userAccount;
+    }
 
+    public void setUserAccount(UserAccount userAccount) {
+        this.userAccount = userAccount;
+    }
+
+    public Boolean getConnected() {
+        return this.userAccount.getConnected();
+    }
+
+    public void setConnected(Boolean connected) {
+        this.userAccount.setConnected(connected);
+    }
+
+    // 🔁 equals basé sur l'id
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BasicInfo that = (BasicInfo) o;
+        return Objects.equals(id, that.id);
+    }
+
+    // 🔁 hashCode basé sur l'id aussi
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

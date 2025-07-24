@@ -1,7 +1,7 @@
 package model;
 
 import model.enumaration.compteType;
-import utils.Stock;
+import data.Stock;
 
 import java.util.List;
 

@@ -1,16 +1,15 @@
 package UseCases;
 
-import model.Admin;
-import model.BasicInfo;
-import model.Customer;
-import model.Marchant;
+import model.*;
 import model.enumaration.compteType;
 import utils.DisplayUtil;
 import utils.InputUtils;
-import utils.Stock;
+import data.Stock;
 
 import java.util.List;
 import java.util.Scanner;
+
+import static utils.DisplayUtil.successMsg;
 
 public class AdminUseCases {
 
@@ -20,7 +19,7 @@ public class AdminUseCases {
             DisplayUtil.display(" Pas de clients enregistres pour le moment ");
         }else {
             DisplayUtil.display("=======================================================");
-            DisplayUtil.display("= NOM | PRENOMS | EMAIL | NUMERO DE TELEPHONE | SOLDE =");
+            DisplayUtil.display("| NOM | PRENOMS | EMAIL | NUMERO DE TELEPHONE | SOLDE |");
             DisplayUtil.display("=======================================================");
             for (Customer customer : customers){
                 System.out.printf("= %s | %s | %s | %s | %s =%n",
@@ -45,7 +44,7 @@ public class AdminUseCases {
             DisplayUtil.display(" Pas de marchants enregistres pour le moment ");
         }else {
             DisplayUtil.display("======================================================================");
-            DisplayUtil.display("= NOM | PRENOMS | EMAIL | NUMERO DE TELEPHONE | SOLDE | LOCALISATION =");
+            DisplayUtil.display("| NOM | PRENOMS | EMAIL | NUMERO DE TELEPHONE | SOLDE | LOCALISATION |");
             DisplayUtil.display("======================================================================");
             for (Marchant marchant : marchants){
                 System.out.printf("= %s | %s | %s | %s | %s | %s =%n",
@@ -70,7 +69,7 @@ public class AdminUseCases {
             DisplayUtil.display(" Pas d'admins enregistres pour le moment");
         }else {
             DisplayUtil.display("============================================================");
-            DisplayUtil.display("= NOM | PRENOMS | EMAIL | NUMERO DE TELEPHONE | PRIVILEGES = ");
+            DisplayUtil.display("| NOM | PRENOMS | EMAIL | NUMERO DE TELEPHONE | PRIVILEGES | ");
             DisplayUtil.display("============================================================");
             for (Customer customer : customers){
                 System.out.printf("= %s | %s | %s | %s | %s =%n",
@@ -119,15 +118,13 @@ public class AdminUseCases {
                 DisplayUtil.display(" Quel est son  sexe? (F|M");
                 String sexe = scanner.nextLine();
                 Customer customer = new Customer(compteType.CUSTOMER,login,mdp,nom,prenom,telephone,email);
-                DisplayUtil.display("Compte cree avec succes!!!");
-                DisplayUtil.display("///////////////////////////////////////");
+                successMsg();
                 break;
 
             }
             case ("2"):{
                 Admin admin = new Admin(compteType.ADMIN,login,mdp,nom,prenom,telephone,email);
-                DisplayUtil.display("Compte cree avec succes!!!");
-                DisplayUtil.display("///////////////////////////////////////");
+                successMsg();
                 break;
 
             }
@@ -135,13 +132,32 @@ public class AdminUseCases {
                 DisplayUtil.display(" Ou se situe votre magasin?");
                 String location = scanner.nextLine();
                 Marchant marchant = new Marchant(compteType.MERCHANT,login,mdp,nom,prenom,telephone,email,location);
-                DisplayUtil.display("Compte cree avec succes!!!");
-                DisplayUtil.display("///////////////////////////////////////");
+                successMsg();
                 break;
             }
             default:
 
         }
 
+    }
+
+
+//    //promouvoir un simple user en admin
+//    public static void promoteUser (String idStr, compteType type){
+//        Long id = Long.parseLong(idStr);
+//
+//        List<BasicInfo> Users = Stock.getInfoList();
+//        for(BasicInfo user : Users){
+//            if (user.getUserAccount().getLogin().equals(login) && user.getUserAccount().getPassword().equals(mdp)){
+//                return user;
+//            }
+//        }
+//        return null;
+//        user.getUserAccount().setCompteType(type);
+//    }
+
+    //suprimer un user
+    public static void deleteUser(User user){
+        Stock.deleteInfo((BasicInfo) user);
     }
 }

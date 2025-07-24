@@ -2,9 +2,7 @@ package model;
 
 import model.enumaration.Gender;
 import model.enumaration.compteType;
-import utils.Stock;
-
-import java.util.List;
+import data.Stock;
 
 public class Customer  extends User{
 
