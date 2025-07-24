@@ -1,12 +1,9 @@
 package utils;
-import fonctionnalites.Authentification;
+import UseCases.BasicInfoUseCases;
 import model.Admin;
-import model.BasicInfo;
 import model.Customer;
 import model.Marchant;
 import model.enumaration.compteType;
-import utils.DisplayUtil;
-import utils.Stock;
 
 import java.util.Scanner;
 
@@ -80,7 +77,7 @@ public class Old {
 
                         Boolean authenticate = false;
                         while (authenticate){
-                            boolean isConnected = Authentification.login();
+                          //  boolean isConnected = BasicInfoUseCases.login();
 
 
                         }

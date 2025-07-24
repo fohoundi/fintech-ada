@@ -1,9 +1,11 @@
 package utils;
 
 import model.*;
+import model.enumaration.compteType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Stock {
 
@@ -37,7 +39,10 @@ public class Stock {
 
     // --- Customer ---
     public static List<Customer> getCustomerList() {
-        return customerList;
+        return infoList.stream()
+                .filter(user -> user.getUserAccount().getCompteType().compareTo(compteType.CUSTOMER) == 0)
+                .map(user -> (Customer) user)
+                .collect(Collectors.toList());
     }
 
     public static void addCustomer(Customer customer) {
@@ -46,7 +51,11 @@ public class Stock {
 
     // --- Marchant ---
     public static List<Marchant> getMarchantList() {
-        return marchantList;
+
+        return infoList.stream()
+                .filter(user -> user.getUserAccount().getCompteType().compareTo(compteType.MERCHANT) == 0)
+                .map(user -> (Marchant) user)
+                .collect(Collectors.toList());
     }
 
     public static void addMarchant(Marchant marchant) {
@@ -55,7 +64,11 @@ public class Stock {
 
     // --- Admin ---
     public static List<Admin> getAdminList() {
-        return adminList;
+
+        return infoList.stream()
+                .filter(user -> user.getUserAccount().getCompteType().compareTo(compteType.ADMIN) == 0)
+                .map(user -> (Admin) user)
+                .collect(Collectors.toList());
     }
 
     public static void addAdmin(Admin admin) {

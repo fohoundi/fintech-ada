@@ -39,8 +39,13 @@ public class Wallet {
         this.balance = balance;
     }
 
-    public void retirer(BigDecimal montant){
-        this.setBalance(this.getBalance().subtract(montant));
+    public boolean retirer(BigDecimal montant){
+        if (this.getBalance().compareTo(montant) < 0){
+            this.setBalance(this.getBalance().subtract(montant));
+            return true;
+        }
+        return false;
+
     }
 
     public void deposer(BigDecimal montant){

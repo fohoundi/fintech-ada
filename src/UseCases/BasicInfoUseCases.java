@@ -1,4 +1,4 @@
-package fonctionnalites;
+package UseCases;
 
 import model.Admin;
 import model.BasicInfo;
@@ -11,7 +11,7 @@ import utils.Stock;
 import java.util.List;
 import java.util.Scanner;
 
-public  class Authentification {
+public  class BasicInfoUseCases {
 
     public static BasicInfo authentificate(String login, String mdp){
 
@@ -21,14 +21,13 @@ public  class Authentification {
 
                 return user;
             }
-            else return null;
         }
         return null;
     }
 
 
 
-    public static  boolean login(){
+    public static  BasicInfo login(){
         final Scanner scanner = new Scanner(System.in);
 
         DisplayUtil.display("Entrez votre username");
@@ -37,15 +36,15 @@ public  class Authentification {
         String password = scanner.nextLine();
 
         /// // verifier le login
-        BasicInfo user = Authentification.authentificate(username,password);
+        BasicInfo user = BasicInfoUseCases.authentificate(username,password);
         if ( user != null){
-            DisplayUtil.display("Bienvenu"+user.getFirstName()+"!!!!");
+            DisplayUtil.display("Bienvenu "+user.getFirstName()+"");
             user.setConnected(true);
-            return true;
+            return user;
 
         }else{
             DisplayUtil.display(" Informations de connection invalides ! veuillez saisir des infos correctes !");
-             return false;
+             return null;
         }
     }
 
@@ -74,7 +73,7 @@ public  class Authentification {
         DisplayUtil.display("1 | client ");
         DisplayUtil.display("2 | admin  ");
         DisplayUtil.display("3 | marchand  ");
-        String choixRole = String.valueOf(scanner.nextInt());
+        String choixRole = scanner.nextLine();
 
 
         switch (choixRole){
@@ -82,20 +81,31 @@ public  class Authentification {
 
                 DisplayUtil.display(" Quel est votre sexe? (F|M");
                 String sexe = scanner.nextLine();
-
                 Customer customer = new Customer(compteType.CUSTOMER,login,mdp,nom,prenom,telephone,email);
+                DisplayUtil.display("Compte cree avec succes!!!");
+                DisplayUtil.display("///////////////////////////////////////");
+                break;
+
             }
             case ("2"):{
                 Admin admin = new Admin(compteType.ADMIN,login,mdp,nom,prenom,telephone,email);
+                DisplayUtil.display("Compte cree avec succes!!!");
+                DisplayUtil.display("///////////////////////////////////////");
+                break;
+
             }
             case ("3"):{
                 DisplayUtil.display(" Ou se situe votre magasin?");
                 String location = scanner.nextLine();
                 Marchant marchant = new Marchant(compteType.MERCHANT,login,mdp,nom,prenom,telephone,email,location);
+                DisplayUtil.display("Compte cree avec succes!!!");
+                DisplayUtil.display("///////////////////////////////////////");
+                break;
             }
+            default:
 
         }
-        DisplayUtil.display("Compte cree avec succes!!!");
-        DisplayUtil.display("///////////////////////////////////////");
+
+
     }
 }

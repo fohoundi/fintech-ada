@@ -1,11 +1,7 @@
-import fonctionnalites.Authentification;
-import model.Admin;
+import UseCases.BasicInfoUseCases;
+import UseCases.Menu;
 import model.BasicInfo;
-import model.Customer;
-import model.Marchant;
-import model.enumaration.compteType;
 import utils.DisplayUtil;
-import utils.Stock;
 
 import java.util.Scanner;
 
@@ -16,56 +12,43 @@ public class Main {
 
         final Scanner scanner = new Scanner(System.in);
 
-        //accueil
-        DisplayUtil.display("=== BIENVENU SUR FINTECH ADA ! === ");
-        DisplayUtil.display("=== Choisissez une option :=== ");
-
-
-        boolean showMenu = true;
-        while (showMenu){
+        boolean run=true;
+        while (run){
+            //Accueil
+            DisplayUtil.display("=== BIENVENU SUR FINTECH ADA ! === ");
+            DisplayUtil.display("=== Choisissez une option :=== ");
             DisplayUtil.display("1 | s'inscrire ");
             DisplayUtil.display("2 | s'authentifier  ");
+            DisplayUtil.display("0 | Quitter  ");
 
             String choix = String.valueOf(scanner.nextInt());
+            scanner.nextLine();
 
+            DisplayUtil.loading("chargement");
+            BasicInfo user = null;
             switch (choix){
                 case ("1"):{
-
-                    Authentification.register();
-
-                    Boolean authenticated = false;
-                    while (authenticated){
-                        boolean isConnected = Authentification.login();
-                    }
-
+                    BasicInfoUseCases.register();
                 }
                 case ("2"):{
-                    Boolean authenticated = false;
-                    while (authenticated){
-                        boolean isConnected = Authentification.login();
+                    while (user == null){
+                        user = BasicInfoUseCases.login();
                     }
+                    Menu.showMenu(user);
+                    break;
                 }
-
-
-
-
-
+                case ("0") :{
+                    DisplayUtil.display("Merci d’avoir utilisé FinTech ADA. À bientôt !");
+                    run = false;
+                    break;
+                }
+                default:
+                    DisplayUtil.display("Option invalide. Veuillez réessayer.");break;
             }
+
 
         }
 
-        // s inscrire ou s authentifier (menu
 
-
-
-        //choisir son role
-
-        // message de bienvenu avec le nom
-
-        // menu selon le role
-            // retrait
-            // depot
-
-        //
     }
 }

@@ -1,4 +1,4 @@
-import fonctionnalites.Authentification;
+import UseCases.BasicInfoUseCases;
 import model.Admin;
 import model.BasicInfo;
 import model.Customer;
