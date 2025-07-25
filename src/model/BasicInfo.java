@@ -28,6 +28,10 @@ public class BasicInfo {
         Stock.addInfo(this);
     }
 
+    public BasicInfo() {
+
+    }
+
     public Long getId() {
         return this.id;
     }

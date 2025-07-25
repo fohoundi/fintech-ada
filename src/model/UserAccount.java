@@ -6,7 +6,7 @@ import java.util.List;
 
 public class UserAccount {
 
-    private final Long id;
+    private  Long id;
 
     private compteType compteType;
 
@@ -24,6 +24,22 @@ public class UserAccount {
         this.login = login;
         this.password = password;
         this.isConnected = false;
+    }
+
+    public UserAccount(compteType compteType, String login, String password) {
+        this.compteType = compteType;
+        this.login = login;
+        this.password = password;
+        this.isConnected = false;
+        this.id = compteurId ++;
+    }
+
+    public UserAccount() {
+
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {

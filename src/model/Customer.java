@@ -15,6 +15,9 @@ public class Customer  extends User{
         Stock.addCustomer(this);
     }
 
+    public Customer() {
+        super();
+    }
 
 
     public Gender getGender() {

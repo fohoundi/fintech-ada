@@ -10,21 +10,14 @@ public class Wallet {
 
     private BigDecimal balance;
 
-    private User user;
 
     public Wallet( User user) {
         this.id = compteurId;
         this.balance = BigDecimal.valueOf(0f);
-        this.user = user;
+
     }
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public Long getId() {
         return id;

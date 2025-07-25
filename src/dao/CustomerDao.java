@@ -1,0 +1,157 @@
+package dao;
+
+import model.Customer;
+import model.UserAccount;
+import model.enumaration.Gender;
+import model.enumaration.compteType;
+
+import java.sql.*;
+
+public class CustomerDao {
+
+    private static final String INSERT = "INSERT INTO Customer (lastname,firstname ,phoneNumber,email,gender,idUserAccount,idWallet) VALUES(?,?,?,?,?,?,?)";
+    private static final String UPDATE = "UPDATE Customer SET lastname=?, firstname=?, phoneNumber=?, email=?, gender=?, idUserAccount=?, idWallet=?, WHERE idUserAccount=?";
+    private static final String DELETE = "DELETE FROM Customer WHERE idUserAccount=?";
+    private static final String READ = "SELECT * FROM Customer WHERE idUserAccount=?";
+    private static final Connection connection;//format de l'url
+
+    static {
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/fintechAdaDB","root","root");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Customer createCustomer(Customer customer){
+        try {
+            PreparedStatement statement = connection.prepareStatement(INSERT);
+            statement.setString(1,customer.getLastName());
+            statement.setString(2,customer.getFirstName());
+            statement.setString(3,customer.getPhoneNumber());
+            statement.setString(4,customer.getEmail());
+            statement.setString(5,customer.getGender().name());
+            statement.setLong(6,customer.getUserAccount().getId());
+            statement.setLong(7,customer.getWallet().getId());
+
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Erreur de requete, aucune ligne n'a ete modifiee.");
+            }
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    customer.getUserAccount().setId(generatedKeys.getLong(1));
+                } else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
+            return customer;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Customer updateCustomer(Customer customer){
+        try {
+            PreparedStatement statement = connection.prepareStatement(UPDATE);
+            statement.setString(1,customer.getLastName());
+            statement.setString(2,customer.getFirstName());
+            statement.setString(3,customer.getPhoneNumber());
+            statement.setString(4,customer.getEmail());
+            statement.setString(5,customer.getGender().name());
+            statement.setLong(6,customer.getUserAccount().getId());
+            statement.setLong(7,customer.getWallet().getId());
+            statement.setLong(8,customer.getUserAccount().getId());
+
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Erreur de requete, aucune ligne n'a ete modifiee.");
+            }
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    customer.getUserAccount().setId(generatedKeys.getLong(1));
+                } else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
+            return customer;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteCustomer(Customer customer){
+        try {
+            PreparedStatement statement = connection.prepareStatement(DELETE);
+            statement.setLong(1,customer.getUserAccount().getId());
+
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Erreur de requete, aucune ligne n'a ete modifiee.");
+            }
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    customer.getUserAccount().setId(generatedKeys.getLong(1));
+                } else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
+
+    public Customer readCustomer(Customer customer){
+        try {
+            PreparedStatement statement = connection.prepareStatement(DELETE);
+            statement.setLong(1,customer.getUserAccount().getId());
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()){
+                Customer customerNew = new Customer();
+
+                customerNew.setGender(Gender.valueOf(result.getString("gender")));
+                customerNew.setEmail(result.getString("email"));
+                customerNew.setFirstName(result.getString("firstName"));
+                customerNew.setLastName(result.getString("lastName"));
+                customerNew.setPhoneNumber(result.getString("phoneNumber"));
+
+
+
+                String resCompteType = result.getString("compteType");
+
+                switch (resCompteType){
+                    case "customer": customerNew.getUserAccount().setCompteType(compteType.CUSTOMER);break;
+                    case "admin": customerNew.getUserAccount().setCompteType(compteType.ADMIN);break;
+                    case "merchant": customerNew.getUserAccount().setCompteType(compteType.MERCHANT);
+                }
+                return customer;
+            }else {
+                throw new SQLException("Creating user failed, no ID obtained.");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
+
+}
+
+
+
+
+
+
+
+

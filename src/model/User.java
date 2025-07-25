@@ -19,6 +19,10 @@ public class User extends BasicInfo{
 
     }
 
+    public User() {
+        super();
+    }
+
     public Wallet getWallet() {
         return wallet;
     }
