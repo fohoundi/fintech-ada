@@ -1,41 +1,52 @@
-CREATE TABLE IF NOT EXISTS USER_ACCOUNT (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    compteType VARCHAR(50) NOT NULL,
-    login VARCHAR(50) NOT NULL,
-    password VARCHAR(255) NOT NULL
-)
-
--- Table: ADMIN
-CREATE TABLE ADMIN (
-    ID BIGINT PRIMARY KEY,
-    PRIVILEGE TEXT
-)
-
--- Table: CUSTOMER
-CREATE TABLE CUSTOMER (
-    ID BIGINT PRIMARY KEY,
-    LAST_NAME VARCHAR(100),
-    FIRST_NAME VARCHAR(100),
-    PHONE_NUMBER VARCHAR(20),
-    EMAIL VARCHAR(100),
-    GENDER VARCHAR(10)
-)
-
--- Table: MERCHANT
-CREATE TABLE MERCHANT (
-    ID BIGINT PRIMARY KEY,
-    LAST_NAME VARCHAR(100),
-    FIRST_NAME VARCHAR(100),
-    PHONE_NUMBER VARCHAR(20),
-    EMAIL VARCHAR(100),
-    LOCALISATION TEXT(250)
+CREATE TABLE Wallet (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    balance DECIMAL(15, 2) NOT NULL DEFAULT 0.00
 );
 
+-- Table UserAccount
+CREATE TABLE UserAccount (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    compteType VARCHAR(20) NOT NULL, -- Ex: 'Admin', 'Merchant', 'Customer'
+    login VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL UNIQUE
+);
 
+-- Table Admin
+CREATE TABLE Admin (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    lastName VARCHAR(100) NOT NULL,
+    firstName VARCHAR(100) NOT NULL,
+    phoneNumber VARCHAR(20),
+    email VARCHAR(100) UNIQUE,
+    idUserAccount INT NOT NULL UNIQUE,
+    privilege VARCHAR(50),
+    FOREIGN KEY (idUserAccount) REFERENCES UserAccount(id)
+);
 
+-- Table Merchant
+CREATE TABLE Merchant (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    lastName VARCHAR(100) NOT NULL,
+    firstName VARCHAR(100) NOT NULL,
+    phoneNumber VARCHAR(20),
+    email VARCHAR(100),
+    localisation VARCHAR(255),
+    idUserAccount INT NOT NULL UNIQUE,
+    idWallet INT NOT NULL UNIQUE,
+    FOREIGN KEY (idUserAccount) REFERENCES UserAccount(id),
+    FOREIGN KEY (idWallet) REFERENCES Wallet(id)
+);
 
--- Table: WALLET
-CREATE TABLE WALLET (
-    ID BIGINT PRIMARY KEY,
-    BALANCE DECIMAL(15,2)
-)
+-- Table Customer
+CREATE TABLE Customer (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    lastName VARCHAR(100) NOT NULL,
+    firstName VARCHAR(100) NOT NULL,
+    phoneNumber VARCHAR(20),
+    email VARCHAR(100),
+    gender VARCHAR(20),
+    idUserAccount INT NOT NULL UNIQUE,
+    idWallet INT NOT NULL UNIQUE,
+    FOREIGN KEY (idUserAccount) REFERENCES UserAccount(id),
+    FOREIGN KEY (idWallet) REFERENCES Wallet(id)
+);
