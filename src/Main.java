@@ -1,7 +1,9 @@
 import UseCases.BasicInfoUseCases;
 import UseCases.Menu;
+import dao.CustomerDao;
 import dao.UserAccountDao;
 import model.BasicInfo;
+import model.Customer;
 import model.UserAccount;
 import model.enumaration.compteType;
 import utils.DisplayUtil;
@@ -21,15 +23,23 @@ public class Main {
         UserAccountDao userAccountDao = new UserAccountDao();
         UserAccount userAccount = new UserAccount(compteType.CUSTOMER,"Eyyli","44BS0507");
         userAccountDao.create(userAccount);
-        userAccountDao.deleteUserAccount("timitou");
 
-        userAccount.setCompteType(compteType.MERCHANT);
-        userAccount.setPassword("0092929");
-        userAccountDao.update(userAccount);
+    //    userAccountDao.deleteUserAccount("timitou");
+    //    userAccount.setCompteType(compteType.MERCHANT);
+    //    userAccount.setPassword("0092929");
+    //    userAccountDao.update(userAccount);
 
         UserAccount userNew = userAccountDao.readUserAccount(userAccount.getLogin());
         System.out.println(userNew.getId());
-        //userAccountDao.update()
+
+        CustomerDao customerDao = new CustomerDao();
+        Customer client = new Customer(compteType.CUSTOMER,userAccount.getLogin(),userAccount.getPassword(),"daddy","kone","9987654","gqgg@hh");
+
+        customerDao.createCustomer(client);
+        client.setFirstName("Koua");
+        Customer newclient = customerDao.updateCustomer(client);
+        customerDao.deleteCustomer(client);
+        newclient = customerDao.readCustomer(client);
 
         final Scanner scanner = new Scanner(System.in); //declaration du scanner pour les saisies de l'utilisateur
 
