@@ -11,12 +11,14 @@ public class UserAccountDao {
     private static final String UPDATE = "UPDATE UserAccount SET login=?, password=?, compteType=? WHERE login=?";
     private static final String DELETE = "DELETE FROM UserAccount WHERE login=?";
     private static final String READ = "SELECT * FROM UserAccount WHERE login=?";
+    private static final String READ_BY_ID = "SELECT * FROM UserAccount WHERE id=?";
     private static final Connection connection;//format de l'url
 
     static {
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/fintechAdaDB","root","root");
-        } catch (SQLException e) {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/fintechAda","root","root");
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -113,4 +115,32 @@ public class UserAccountDao {
             throw new RuntimeException(e);
         }
     }
+
+    public UserAccount readUserAccountById(Long id){
+        try {
+            PreparedStatement statement = connection.prepareStatement(READ_BY_ID);
+            statement.setLong(1,id);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()){
+                UserAccount user = new UserAccount();
+                user.setId(result.getLong("id"));
+                user.setLogin(result.getString("login"));
+                user.setPassword(result.getString("password"));
+                String resCompteType = result.getString("compteType");
+
+                switch (resCompteType){
+                    case "customer": user.setCompteType(compteType.CUSTOMER);break;
+                    case "admin": user.setCompteType(compteType.ADMIN);break;
+                    case "merchant": user.setCompteType(compteType.MERCHANT);
+                }
+                return user;
+            }else {
+                throw new SQLException("Creating user failed, no ID obtained.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

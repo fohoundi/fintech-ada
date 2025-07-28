@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 
 public class Wallet {
 
-    private final Long id;
+    private  Long id;
 
     private Long compteurId = 0L;
 
     private BigDecimal balance;
 
 
-    public Wallet( User user) {
+    public Wallet() {
         this.id = compteurId;
         this.balance = BigDecimal.valueOf(0f);
 
@@ -23,6 +23,9 @@ public class Wallet {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public BigDecimal getBalance() {
         return balance;

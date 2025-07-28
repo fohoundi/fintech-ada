@@ -4,7 +4,7 @@ import model.enumaration.Gender;
 import model.enumaration.compteType;
 import data.Stock;
 
-public class Customer  extends User{
+public class Customer  extends User {
 
     private Gender gender;
 

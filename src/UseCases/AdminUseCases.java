@@ -5,6 +5,7 @@ import model.enumaration.compteType;
 import utils.DisplayUtil;
 import utils.InputUtils;
 import data.Stock;
+import model.User;
 
 import java.util.List;
 import java.util.Scanner;

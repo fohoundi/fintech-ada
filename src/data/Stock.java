@@ -2,6 +2,7 @@ package data;
 
 import model.*;
 import model.enumaration.compteType;
+import model.User;
 
 import java.util.ArrayList;
 import java.util.List;

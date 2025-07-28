@@ -9,6 +9,10 @@ public class Admin extends BasicInfo {
 
     private List<String> Privileges;
 
+    public Admin() {
+        super();
+    }
+
     public Admin(compteType type, String login, String password, String lastName, String firstName, String phoneNumber, String email){
         super(type,  login,  password,  lastName,  firstName,  phoneNumber,  email);
         Stock.addAdmin(this);

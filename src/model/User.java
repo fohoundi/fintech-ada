@@ -2,10 +2,7 @@ package model;
 
 import model.enumaration.compteType;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-public class User extends BasicInfo{
+public class User extends BasicInfo {
 
     private String profileImage;
 
@@ -15,7 +12,7 @@ public class User extends BasicInfo{
 
     public User(compteType type, String login, String password, String lastName, String firstName, String phoneNumber, String email) {
         super(type, login, password, lastName, firstName, phoneNumber, email);
-        this.wallet = new Wallet(this);
+        //this.wallet = new Wallet(this);
 
     }
 

@@ -9,7 +9,7 @@ public class BasicInfo {
 
     private static Long compteurId = 0L; // partagé entre toutes les instances
 
-    private final Long id;
+    private  Long id=0L;
 
     private String lastName;
     private String firstName;
@@ -26,6 +26,10 @@ public class BasicInfo {
         this.email = email;
         this.userAccount = new UserAccount(type, login, password, false);
         Stock.addInfo(this);
+    }
+
+    public static void setCompteurId(Long compteurId) {
+        BasicInfo.compteurId = compteurId;
     }
 
     public BasicInfo() {
@@ -97,5 +101,9 @@ public class BasicInfo {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

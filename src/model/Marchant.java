@@ -4,7 +4,7 @@ import model.enumaration.compteType;
 import data.Stock;
 
 
-public class Marchant  extends User{
+public class Marchant  extends User {
 
     private String location;
 
@@ -15,6 +15,9 @@ public class Marchant  extends User{
         this.location = location;
 
         Stock.addMarchant(this);
+    }
+    public Marchant(){
+        super();
     }
 
     public String getLocation() {
