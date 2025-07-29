@@ -112,7 +112,7 @@ public class CustomerDao {
 
                 UserAccount userAccount;
                 UserAccountDao userAccountDao = new UserAccountDao();
-                userAccount = userAccountDao.readUserAccountById(result.getLong("idUserAccount"));
+                userAccount = userAccountDao.findById(result.getLong("idUserAccount"));
                 customerNew.setUserAccount(userAccount);
 
                 WalletDao walletDao = new WalletDao();

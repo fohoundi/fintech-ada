@@ -1,17 +1,11 @@
-import UseCases.BasicInfoUseCases;
-import UseCases.Menu;
 import dao.*;
 import model.*;
-import model.enumaration.Gender;
 import model.enumaration.compteType;
-import utils.DisplayUtil;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import static UseCases.Menu.initApp;
 import static UseCases.Menu.mainMenu;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -21,6 +15,23 @@ public class Main {
     public static void main(String[] args) {
         //initApp();//creation des premiers users pour les tests
 
+        UserAccount userAccount = new UserAccount(compteType.MERCHANT,"etze","29999999");
+        UserAccountDao userAccountDao = new UserAccountDao();
+        //userAccountDao.createUser(userAccount);
+
+      /*  userAccount.setLogin("miol");
+        userAccountDao.updateUserAccount(userAccount);
+
+        UserAccount userAccount1 = userAccountDao.findById(34L);
+        System.out.println(userAccount1.getLogin());
+
+        UserAccount userAccount2 = userAccountDao.findByLogin("alan");
+        System.out.println(userAccount2.getLogin());
+
+        List<UserAccount> users = userAccountDao.findAll();
+        System.out.println(users.size());
+        */
+        userAccountDao.deleteUserAccount(39L);
         /* Test Wallet */
             /*Wallet wallet = new Wallet();
             WalletDao walletDao = new WalletDao();
@@ -34,7 +45,7 @@ public class Main {
         /* Test Custoner */
             /*UserAccount userAccount = new UserAccount(compteType.CUSTOMER,"eliot","82dhhhd82");
             UserAccountDao userAccountDao = new UserAccountDao();
-            userAccountDao.create(userAccount);
+            userAccountDao.createUser(userAccount);
             //UserAccount userAccount = userAccountDao.readUserAccountById(6L);
             System.out.println(userAccount.getLogin());
 
@@ -47,7 +58,7 @@ public class Main {
             customer.setLastName("edeer");
             customer.setPhoneNumber("584455578");
             CustomerDao customerDao = new CustomerDao();
-            //create
+            //createUser
             customer = customerDao.createCustomer(customer);
             System.out.println(customer.getUserAccount().getId());
             //update
@@ -64,7 +75,7 @@ public class Main {
             wallet = walletDao.createWallet(wallet);
             UserAccount userAccount = new UserAccount(compteType.MERCHANT,"gra","gra777");
             UserAccountDao userAccountDao = new UserAccountDao();
-            userAccount = userAccountDao.create(userAccount);
+            userAccount = userAccountDao.createUser(userAccount);
 
             Marchant marchant = new Marchant();
             marchant.setLocation("cocody");
@@ -84,9 +95,9 @@ public class Main {
             System.out.println(marchant.getLocation());
           */
          /* Test Admin */
-        UserAccount userAccount = new UserAccount(compteType.ADMIN,"adou","adou776");
+        /*UserAccount userAccount = new UserAccount(compteType.ADMIN,"adou","adou776");
         UserAccountDao userAccountDao = new UserAccountDao();
-        userAccount = userAccountDao.create(userAccount);
+        userAccount = userAccountDao.createUser(userAccount);
 
         Admin admin = new Admin();
         admin.setEmail("adou@joud");
@@ -101,7 +112,7 @@ public class Main {
 
         admin.setEmail("hhdhdh");
         adminDao.updateAdmin(admin);
-
+        */
 
 
         final Scanner scanner = new Scanner(System.in); //declaration du scanner pour les saisies de l'utilisateur

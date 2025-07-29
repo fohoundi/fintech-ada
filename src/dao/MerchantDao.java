@@ -113,7 +113,7 @@ public class MerchantDao {
 
                 UserAccount userAccount;
                 UserAccountDao userAccountDao = new UserAccountDao();
-                userAccount = userAccountDao.readUserAccountById(result.getLong("idUserAccount"));
+                userAccount = userAccountDao.findById(result.getLong("idUserAccount"));
                 marchantNew.setUserAccount(userAccount);
 
                 WalletDao walletDao = new WalletDao();

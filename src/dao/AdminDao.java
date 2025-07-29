@@ -103,7 +103,7 @@ public class AdminDao {
 
                 UserAccount userAccount;
                 UserAccountDao userAccountDao = new UserAccountDao();
-                userAccount = userAccountDao.readUserAccountById(result.getLong("idUserAccount"));
+                userAccount = userAccountDao.findById(result.getLong("idUserAccount"));
                 admin.setUserAccount(userAccount);
 
                 return admin;
