@@ -21,18 +21,18 @@ public class Main {
     public static void main(String[] args) {
         //initApp();//creation des premiers users pour les tests
 
-        /* Test Wallet */
-            /*Wallet wallet = new Wallet();
+        /* Test Wallet
+            Wallet wallet = new Wallet();
             WalletDao walletDao = new WalletDao();
             walletDao.createWallet(wallet);
             wallet.setBalance(BigDecimal.valueOf(300));
-            walletDao.updateWallet(wallet); */
+            walletDao.updateWallet(wallet);
             //Wallet newWallet = walletDao.readWallet(21L);
             //System.out.println(newWallet.getBalance());
-
+        */
 
         /* Test Custoner */
-            /*UserAccount userAccount = new UserAccount(compteType.CUSTOMER,"eliot","82dhhhd82");
+        /*    UserAccount userAccount = new UserAccount(compteType.CUSTOMER,"vic","5h2c");
             UserAccountDao userAccountDao = new UserAccountDao();
             userAccountDao.create(userAccount);
             //UserAccount userAccount = userAccountDao.readUserAccountById(6L);
@@ -41,11 +41,12 @@ public class Main {
             Customer customer = new Customer();
             customer.setWallet(wallet);
             customer.setUserAccount(userAccount);
-            customer.setEmail("eliot@kk");
+            customer.setEmail("ylet@jdj");
             customer.setGender(Gender.WOMEN);
-            customer.setFirstName("eliot");
-            customer.setLastName("edeer");
-            customer.setPhoneNumber("584455578");
+            customer.setFirstName("vic");
+            customer.setLastName("tra");
+            customer.setPhoneNumber("8559");
+            customer.setMatricule(customer.generateMatricule(customer.getFirstName(), customer.getLastName()));
             CustomerDao customerDao = new CustomerDao();
             //create
             customer = customerDao.createCustomer(customer);
@@ -54,15 +55,14 @@ public class Main {
             customer.setPhoneNumber("122221");
             customerDao.updateCustomer(customer);
             //read
-            Customer client = customerDao.readCustomer(28L);
-            System.out.println(client.getEmail()); */
+           // Customer client = customerDao.readCustomer(28L);
+        */
 
-
-        /* TEST MARCHAND */
-        /*Wallet wallet = new Wallet();
+        /* TEST MARCHAND
+           Wallet wallet = new Wallet();
             WalletDao walletDao = new WalletDao();
             wallet = walletDao.createWallet(wallet);
-            UserAccount userAccount = new UserAccount(compteType.MERCHANT,"gra","gra777");
+            UserAccount userAccount = new UserAccount(compteType.MERCHANT,"grra","gra77z7");
             UserAccountDao userAccountDao = new UserAccountDao();
             userAccount = userAccountDao.create(userAccount);
 
@@ -74,6 +74,7 @@ public class Main {
             marchant.setLastName("gro");
             marchant.setPhoneNumber("0444499333");
             marchant.setUserAccount(userAccount);
+            marchant.setMatricule(marchant.generateMatricule(marchant.getFirstName(),marchant.getLastName()));
 
             MerchantDao marchantDao = new MerchantDao();
             marchant = marchantDao.createMerchant(marchant);
@@ -82,7 +83,8 @@ public class Main {
             marchantDao.updateMarchant(marchant);
             marchant = marchantDao.readMarchant(marchant.getId());
             System.out.println(marchant.getLocation());
-          */
+            */
+
          /* Test Admin */
         UserAccount userAccount = new UserAccount(compteType.ADMIN,"adou","adou776");
         UserAccountDao userAccountDao = new UserAccountDao();
@@ -93,6 +95,7 @@ public class Main {
         admin.setFirstName("adou");
         admin.setLastName("adoua");
         admin.setPhoneNumber("34445533");
+        admin.setMatricule(admin.generateMatricule(admin.getFirstName(),admin.getLastName()));
         List<String> privileges = Arrays.asList("read", "write");
         admin.setPrivileges(privileges);
         admin.setUserAccount(userAccount);

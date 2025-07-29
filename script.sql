@@ -14,6 +14,7 @@ CREATE TABLE UserAccount (
 -- Table Admin
 CREATE TABLE Admin (
     id INT PRIMARY KEY AUTO_INCREMENT,
+     matricule VARCHAR(100) NOT NULL,
     lastName VARCHAR(100) NOT NULL,
     firstName VARCHAR(100) NOT NULL,
     phoneNumber VARCHAR(20),
@@ -26,6 +27,7 @@ CREATE TABLE Admin (
 -- Table Merchant
 CREATE TABLE Merchant (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    matricule VARCHAR(100) NOT NULL,
     lastName VARCHAR(100) NOT NULL,
     firstName VARCHAR(100) NOT NULL,
     phoneNumber VARCHAR(20),
@@ -40,6 +42,7 @@ CREATE TABLE Merchant (
 -- Table Customer
 CREATE TABLE Customer (
     id INT PRIMARY KEY AUTO_INCREMENT,
+     matricule VARCHAR(100) NOT NULL,
     lastName VARCHAR(100) NOT NULL,
     firstName VARCHAR(100) NOT NULL,
     phoneNumber VARCHAR(20),

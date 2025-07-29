@@ -11,8 +11,8 @@ import java.sql.*;
 public class MerchantDao {
 
 
-    private static final String INSERT = "INSERT INTO Merchant (lastname,firstname ,phoneNumber,email,localisation,idUserAccount,idWallet) VALUES(?,?,?,?,?,?,?)";
-    private static final String UPDATE = "UPDATE Merchant SET lastname=?, firstname=?, phoneNumber=?, email=?, localisation=?, idUserAccount=?, idWallet=? WHERE idUserAccount=?";
+    private static final String INSERT = "INSERT INTO Merchant (matricule, lastname,firstname ,phoneNumber,email,localisation,idUserAccount,idWallet) VALUES(?,?,?,?,?,?,?,?)";
+    private static final String UPDATE = "UPDATE Merchant SET matricule=?, lastname=?, firstname=?, phoneNumber=?, email=?, localisation=?, idUserAccount=?, idWallet=? WHERE idUserAccount=?";
     private static final String DELETE = "DELETE FROM Merchant WHERE idUserAccount=?";
     private static final String READ = "SELECT * FROM Merchant WHERE id=?";
     private static final Connection connection;//format de l'url
@@ -28,13 +28,14 @@ public class MerchantDao {
     public Marchant createMerchant(Marchant marchant){
         try {
             PreparedStatement statement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1,marchant.getLastName());
-            statement.setString(2,marchant.getFirstName());
-            statement.setString(3,marchant.getPhoneNumber());
-            statement.setString(4,marchant.getEmail());
-            statement.setString(5,marchant.getLocation());
-            statement.setLong(6,marchant.getUserAccount().getId());
-            statement.setLong(7,marchant.getWallet().getId());
+            statement.setString(1,marchant.getMatricule());
+            statement.setString(2,marchant.getLastName());
+            statement.setString(3,marchant.getFirstName());
+            statement.setString(4,marchant.getPhoneNumber());
+            statement.setString(5,marchant.getEmail());
+            statement.setString(6,marchant.getLocation());
+            statement.setLong(7,marchant.getUserAccount().getId());
+            statement.setLong(8,marchant.getWallet().getId());
 
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -58,14 +59,15 @@ public class MerchantDao {
         try {
 
             PreparedStatement statement = connection.prepareStatement(UPDATE);
-            statement.setString(1,marchant.getLastName());
-            statement.setString(2,marchant.getFirstName());
-            statement.setString(3,marchant.getPhoneNumber());
-            statement.setString(4,marchant.getEmail());
-            statement.setString(5,marchant.getLocation());
-            statement.setLong(6,marchant.getUserAccount().getId());
-            statement.setLong(7,marchant.getWallet().getId());
-            statement.setLong(8,marchant.getUserAccount().getId());
+            statement.setString(1,marchant.getMatricule());
+            statement.setString(2,marchant.getLastName());
+            statement.setString(3,marchant.getFirstName());
+            statement.setString(4,marchant.getPhoneNumber());
+            statement.setString(5,marchant.getEmail());
+            statement.setString(6,marchant.getLocation());
+            statement.setLong(7,marchant.getUserAccount().getId());
+            statement.setLong(8,marchant.getWallet().getId());
+            statement.setLong(9,marchant.getUserAccount().getId());
 
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {

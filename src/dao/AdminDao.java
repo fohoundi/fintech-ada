@@ -11,8 +11,8 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 
 public class AdminDao {
-    private static final String INSERT = "INSERT INTO Admin (lastname,firstname ,phoneNumber,email,idUserAccount,privilege) VALUES(?,?,?,?,?,?)";
-    private static final String UPDATE = "UPDATE Admin SET lastname=?, firstname=?, phoneNumber=?, email=?, idUserAccount=?, privilege=? WHERE idUserAccount=?";
+    private static final String INSERT = "INSERT INTO Admin (matricule, lastname,firstname ,phoneNumber,email,idUserAccount,privilege) VALUES(?,?,?,?,?,?,?)";
+    private static final String UPDATE = "UPDATE Admin SET matricule=?, lastname=?, firstname=?, phoneNumber=?, email=?, idUserAccount=?, privilege=? WHERE idUserAccount=?";
     private static final String DELETE = "DELETE FROM Admin WHERE idUserAccount=?";
     private static final String READ = "SELECT * FROM Admin WHERE id=?";
     private static final Connection connection;//format de l'url
@@ -28,12 +28,13 @@ public class AdminDao {
     public Admin createAdmin(Admin admin){
         try {
             PreparedStatement statement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1,admin.getLastName());
-            statement.setString(2,admin.getFirstName());
-            statement.setString(3,admin.getPhoneNumber());
-            statement.setString(4,admin.getEmail());
-            statement.setLong(5,admin.getUserAccount().getId());
-            statement.setString(6,admin
+            statement.setString(1,admin.getMatricule());
+            statement.setString(2,admin.getLastName());
+            statement.setString(3,admin.getFirstName());
+            statement.setString(4,admin.getPhoneNumber());
+            statement.setString(5,admin.getEmail());
+            statement.setLong(6,admin.getUserAccount().getId());
+            statement.setString(7,admin
                     .getPrivileges()
                     .stream()
                     .collect(Collectors.joining(", ")));
@@ -60,16 +61,18 @@ public class AdminDao {
         try {
 
             PreparedStatement statement = connection.prepareStatement(UPDATE);
-            statement.setString(1,admin.getLastName());
-            statement.setString(2,admin.getFirstName());
-            statement.setString(3,admin.getPhoneNumber());
-            statement.setString(4,admin.getEmail());
-            statement.setLong(5,admin.getUserAccount().getId());
-            statement.setString(6,admin.getPrivileges()
+            statement.setString(1,admin.getMatricule());
+            statement.setString(2,admin.getLastName());
+            statement.setString(3,admin.getFirstName());
+            statement.setString(4,admin.getPhoneNumber());
+            statement.setString(5,admin.getEmail());
+            statement.setLong(6,admin.getUserAccount().getId());
+            statement.setString(7,admin
+                    .getPrivileges()
                     .stream()
                     .collect(Collectors.joining(", "))
             );
-            statement.setLong(7,admin.getUserAccount().getId());
+            statement.setLong(8,admin.getUserAccount().getId());
 
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
