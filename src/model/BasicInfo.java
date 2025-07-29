@@ -3,7 +3,10 @@ package model;
 import model.enumaration.compteType;
 import data.Stock;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class BasicInfo {
 
@@ -15,8 +18,11 @@ public class BasicInfo {
     private String firstName;
     private String phoneNumber;
     private String email;
-
     private UserAccount userAccount;
+    private String matricule;
+    private final List<Integer> generatedNum = new ArrayList<>();
+    private static final Random random = new Random();
+
 
     public BasicInfo(compteType type, String login, String password, String lastName, String firstName, String phoneNumber, String email) {
         this.id = compteurId++; // ID unique pour chaque nouvel objet
@@ -25,7 +31,42 @@ public class BasicInfo {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.userAccount = new UserAccount(type, login, password, false);
+        this.matricule = generateMatricule(firstName,lastName);
         Stock.addInfo(this);
+    }
+
+    public String getMatricule() {
+        return matricule;
+    }
+
+    public void setMatricule(String matricule) {
+        this.matricule = matricule;
+    }
+
+    public String generateMatricule(String nom, String prenom){
+        String nomComplet = nom+" "+prenom;
+        String[] noms = nomComplet.trim().split("\\s+");
+        StringBuilder initiales = new StringBuilder();
+
+        for (String name : noms) {
+            if (!name.isEmpty()) {
+                initiales.append(Character.toUpperCase(name.charAt(0)));
+            }
+        }
+
+        int nb = generateNum();
+
+        return "ADA-CH3-2025-" + initiales + "-" + String.format("%04d", nb);
+
+    }
+    private int generateNum (){
+        int numero;
+        do {
+            numero = 1 + random.nextInt(1000); // 1 à 1000 inclus
+        } while (generatedNum.contains(numero));
+
+        generatedNum.add(numero);
+        return numero;
     }
 
     public static void setCompteurId(Long compteurId) {

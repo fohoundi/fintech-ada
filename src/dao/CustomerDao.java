@@ -10,8 +10,8 @@ import java.sql.*;
 
 public class CustomerDao {
 
-    private static final String INSERT = "INSERT INTO Customer (lastname,firstname ,phoneNumber,email,gender,idUserAccount,idWallet) VALUES(?,?,?,?,?,?,?)";
-    private static final String UPDATE = "UPDATE Customer SET lastname=?, firstname=?, phoneNumber=?, email=?, gender=?, idUserAccount=?, idWallet=? WHERE idUserAccount=?";
+    private static final String INSERT = "INSERT INTO Customer (matricule,lastname,firstname ,phoneNumber,email,gender,idUserAccount,idWallet) VALUES(?,?,?,?,?,?,?,?)";
+    private static final String UPDATE = "UPDATE Customer SET matricule=?, lastname=?, firstname=?, phoneNumber=?, email=?, gender=?, idUserAccount=?, idWallet=? WHERE idUserAccount=?";
     private static final String DELETE = "DELETE FROM Customer WHERE idUserAccount=?";
     private static final String READ = "SELECT * FROM Customer WHERE id=?";
     private static final Connection connection;//format de l'url
@@ -27,13 +27,15 @@ public class CustomerDao {
     public Customer createCustomer(Customer customer){
         try {
             PreparedStatement statement = connection.prepareStatement(INSERT,Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1,customer.getLastName());
-            statement.setString(2,customer.getFirstName());
-            statement.setString(3,customer.getPhoneNumber());
-            statement.setString(4,customer.getEmail());
-            statement.setString(5,customer.getGender().name());
-            statement.setLong(6,customer.getUserAccount().getId());
-            statement.setLong(7,customer.getWallet().getId());
+            System.out.println(customer.getMatricule());
+            statement.setString(1, customer.getMatricule());
+            statement.setString(2,customer.getLastName());
+            statement.setString(3,customer.getFirstName());
+            statement.setString(4,customer.getPhoneNumber());
+            statement.setString(5,customer.getEmail());
+            statement.setString(6,customer.getGender().name());
+            statement.setLong(7,customer.getUserAccount().getId());
+            statement.setLong(8,customer.getWallet().getId());
 
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -57,14 +59,15 @@ public class CustomerDao {
         try {
 
             PreparedStatement statement = connection.prepareStatement(UPDATE);
-            statement.setString(1,customer.getLastName());
-            statement.setString(2,customer.getFirstName());
-            statement.setString(3,customer.getPhoneNumber());
-            statement.setString(4,customer.getEmail());
-            statement.setString(5,customer.getGender().name());
-            statement.setLong(6,customer.getUserAccount().getId());
-            statement.setLong(7,customer.getWallet().getId());
-            statement.setLong(8,customer.getUserAccount().getId());
+            statement.setString(1, customer.getMatricule());
+            statement.setString(2,customer.getLastName());
+            statement.setString(3,customer.getFirstName());
+            statement.setString(4,customer.getPhoneNumber());
+            statement.setString(5,customer.getEmail());
+            statement.setString(6,customer.getGender().name());
+            statement.setLong(7,customer.getUserAccount().getId());
+            statement.setLong(8,customer.getWallet().getId());
+            statement.setLong(9,customer.getUserAccount().getId());
 
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
