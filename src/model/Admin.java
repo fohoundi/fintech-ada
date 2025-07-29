@@ -18,6 +18,11 @@ public class Admin extends BasicInfo {
         Stock.addAdmin(this);
     }
 
+    public Admin(UserAccount userAccount, String lastName, String firstName, String phoneNumber, String email){
+        super(userAccount,lastName,firstName, phoneNumber,email);
+
+    }
+
     public List<String> getPrivileges() {
         return Privileges;
     }

@@ -1,4 +1,4 @@
-package UseCases;
+package services;
 
 import model.User;
 import utils.DisplayUtil;

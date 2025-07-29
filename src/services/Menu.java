@@ -1,4 +1,4 @@
-package UseCases;
+package services;
 
 import model.Admin;
 import model.BasicInfo;
@@ -87,12 +87,12 @@ public class Menu {
             switch (choix){
                 case "1":{
                     DisplayUtil.loading("chargement de la liste");
-                    AdminUseCases.getCustomers();
+                    AdminService.getCustomers();
                     break;
                 }
                 case "2":{
                     DisplayUtil.loading("chargement de la liste");
-                    AdminUseCases.getMerchants();
+                    AdminService.getMerchants();
                     break;
 
                 }
@@ -103,7 +103,7 @@ public class Menu {
 //                case "4":{
 //                    DisplayUtil.display("Entrez l'id de utilisateur que vous voulez rendre admin ");
 //                    String id =scanner.nextLine();
-//                    AdminUseCases.promoteUser(u);
+//                    AdminService.promoteUser(u);
 //                }
                 case "0":{
                     DisplayUtil.display("Merci d’avoir utilisé FinTech ADA. À bientôt !");

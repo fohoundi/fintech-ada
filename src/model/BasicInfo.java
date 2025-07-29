@@ -35,6 +35,16 @@ public class BasicInfo {
         Stock.addInfo(this);
     }
 
+    public BasicInfo(UserAccount userAccount, String lastName, String firstName, String phoneNumber, String email) {
+        this.id = compteurId++; // ID unique pour chaque nouvel objet
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.userAccount = userAccount;
+        this.matricule = generateMatricule(firstName,lastName);
+        Stock.addInfo(this);
+    }
     public String getMatricule() {
         return matricule;
     }

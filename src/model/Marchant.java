@@ -1,5 +1,6 @@
 package model;
 
+import model.enumaration.Gender;
 import model.enumaration.compteType;
 import data.Stock;
 
@@ -15,6 +16,11 @@ public class Marchant  extends User {
         this.location = location;
 
         Stock.addMarchant(this);
+    }
+
+    public Marchant(UserAccount userAccount, Wallet wallet, String lastName, String firstName, String phoneNumber, String email, String location){
+        super(userAccount,lastName,firstName, phoneNumber,email, wallet);
+        this.location = location;
     }
     public Marchant(){
         super();

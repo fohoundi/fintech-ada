@@ -16,6 +16,12 @@ public class User extends BasicInfo {
 
     }
 
+    public User(UserAccount userAccount, String lastName, String firstName, String phoneNumber, String email, Wallet wallet) {
+        super(userAccount, lastName, firstName, phoneNumber, email);
+        this.wallet = wallet;
+
+    }
+
     public User() {
         super();
     }

@@ -1,4 +1,4 @@
-package UseCases;
+package services;
 
 import model.Admin;
 import model.BasicInfo;

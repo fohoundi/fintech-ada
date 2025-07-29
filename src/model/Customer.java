@@ -18,6 +18,10 @@ public class Customer  extends User {
     public Customer() {
         super();
     }
+    public Customer(UserAccount userAccount,Wallet wallet, String lastName, String firstName, String phoneNumber, String email,Gender gender){
+        super(userAccount,lastName,firstName, phoneNumber,email, wallet);
+        this.gender = gender;
+    }
 
 
     public Gender getGender() {

@@ -7,13 +7,16 @@ import model.enumaration.Gender;
 import model.enumaration.compteType;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerDao {
 
     private static final String INSERT = "INSERT INTO Customer (matricule,lastname,firstname ,phoneNumber,email,gender,idUserAccount,idWallet) VALUES(?,?,?,?,?,?,?,?)";
-    private static final String UPDATE = "UPDATE Customer SET matricule=?, lastname=?, firstname=?, phoneNumber=?, email=?, gender=?, idUserAccount=?, idWallet=? WHERE idUserAccount=?";
-    private static final String DELETE = "DELETE FROM Customer WHERE idUserAccount=?";
-    private static final String READ = "SELECT * FROM Customer WHERE id=?";
+    private static final String UPDATE_BY_ID = "UPDATE Customer SET matricule=?, lastname=?, firstname=?, phoneNumber=?, email=?, gender=?, idUserAccount=?, idWallet=? WHERE id=?";
+    private static final String DELETE_BY_ID = "DELETE FROM Customer WHERE id=?";
+    private static final String READ_BY_ID = "SELECT * FROM Customer WHERE id=?";
+    private static final String READ_ALL = "SELECT * FROM Customer ";
     private static final Connection connection;//format de l'url
 
     static {
@@ -27,17 +30,9 @@ public class CustomerDao {
     public Customer createCustomer(Customer customer){
         try {
             PreparedStatement statement = connection.prepareStatement(INSERT,Statement.RETURN_GENERATED_KEYS);
-            System.out.println(customer.getMatricule());
-            statement.setString(1, customer.getMatricule());
-            statement.setString(2,customer.getLastName());
-            statement.setString(3,customer.getFirstName());
-            statement.setString(4,customer.getPhoneNumber());
-            statement.setString(5,customer.getEmail());
-            statement.setString(6,customer.getGender().name());
-            statement.setLong(7,customer.getUserAccount().getId());
-            statement.setLong(8,customer.getWallet().getId());
-
+            statement = setStatementProps(statement,customer);
             int affectedRows = statement.executeUpdate();
+
             if (affectedRows == 0) {
                 throw new SQLException("Erreur de requete, aucune ligne n'a ete modifiee.");
             }
@@ -55,82 +50,34 @@ public class CustomerDao {
         }
     }
 
-    public void updateCustomer(Customer customer){
+    public Customer updateCustomer(Customer customer){
         try {
 
-            PreparedStatement statement = connection.prepareStatement(UPDATE);
-            statement.setString(1, customer.getMatricule());
-            statement.setString(2,customer.getLastName());
-            statement.setString(3,customer.getFirstName());
-            statement.setString(4,customer.getPhoneNumber());
-            statement.setString(5,customer.getEmail());
-            statement.setString(6,customer.getGender().name());
-            statement.setLong(7,customer.getUserAccount().getId());
-            statement.setLong(8,customer.getWallet().getId());
-            statement.setLong(9,customer.getUserAccount().getId());
+            PreparedStatement statement = connection.prepareStatement(UPDATE_BY_ID);
+            statement = setStatementProps(statement,customer);
+            statement.setLong(9,customer.getId());
 
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new SQLException("Erreur de requete, aucune ligne n'a ete modifiee.");
-            }
-
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void deleteCustomer(Customer customer){
-        try {
-            PreparedStatement statement = connection.prepareStatement(DELETE);
-            statement.setLong(1,customer.getUserAccount().getId());
-
-            int affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("Erreur de requete, aucune ligne n'a ete modifiee.");
-            }
-
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public Customer readCustomer(Long id){
-        try {
-            PreparedStatement statement = connection.prepareStatement(READ);
-            statement.setLong(1,id);
-            System.out.println("Recherche du customer avec ID = " + id);
-
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()){
-                Customer customerNew = new Customer();
-                customerNew.setGender(Gender.valueOf(result.getString("gender")));
-                customerNew.setEmail(result.getString("email"));
-                customerNew.setFirstName(result.getString("firstName"));
-                customerNew.setLastName(result.getString("lastName"));
-                customerNew.setPhoneNumber(result.getString("phoneNumber"));
-
-
-                UserAccount userAccount;
-                UserAccountDao userAccountDao = new UserAccountDao();
-                userAccount = userAccountDao.findById(result.getLong("idUserAccount"));
-                customerNew.setUserAccount(userAccount);
-
-                WalletDao walletDao = new WalletDao();
-                Wallet wallet = walletDao.readWallet(result.getLong("idWallet"));
-                customerNew.setWallet(wallet);
-                //   String resCompteType = result.getString("compteType");
-
-              //  switch (resCompteType){
-             //       case "customer": customerNew.getUserAccount().setCompteType(compteType.CUSTOMER);break;
-               //     case "admin": customerNew.getUserAccount().setCompteType(compteType.ADMIN);break;
-                 //   case "merchant": customerNew.getUserAccount().setCompteType(compteType.MERCHANT);
-               // }
-                return customerNew;
             }else {
-                throw new SQLException("Customer with ID " + id + " not found.");
+                return customer;
+            }
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteCustomerById(Long id){
+        try {
+            PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID);
+            statement.setLong(1,id);
+
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Erreur de requete, aucune ligne n'a ete modifiee.");
             }
 
         } catch (SQLException e) {
@@ -138,6 +85,81 @@ public class CustomerDao {
         }
     }
 
+    public Customer findCustomerById(Long id){
+        try {
+            PreparedStatement statement = connection.prepareStatement(READ_BY_ID);
+            statement.setLong(1,id);
+            return getCustomer(statement);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Customer> findAllCustomers(){
+        try {
+            PreparedStatement statement = connection.prepareStatement(READ_ALL);
+            final List<Customer> finalCustomers = new ArrayList<>();
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()){
+                Customer customer = mappingCustomerFromResultSet(resultSet);
+                finalCustomers.add(customer);
+            }
+            return finalCustomers;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /*******Utilitaires **********/
+    private PreparedStatement setStatementProps(PreparedStatement statement, Customer customer) throws SQLException {
+        statement.setString(1, customer.getMatricule());
+        statement.setString(2,customer.getLastName());
+        statement.setString(3,customer.getFirstName());
+        statement.setString(4,customer.getPhoneNumber());
+        statement.setString(5,customer.getEmail());
+        statement.setString(6,customer.getGender().name());
+        statement.setLong(7,customer.getUserAccount().getId());
+        statement.setLong(8,customer.getWallet().getId());
+
+        return statement;
+    }
+
+    private Customer getCustomer(PreparedStatement statement) throws SQLException {
+        ResultSet resultSet = statement.executeQuery();
+        Customer customerNew = new Customer();
+        while (resultSet.next()){
+            customerNew = mappingCustomerFromResultSet(resultSet);
+        }
+        return customerNew;
+    }
+
+    private Customer mappingCustomerFromResultSet(ResultSet result) throws SQLException {
+        Customer customerNew = new Customer();
+        try {
+            customerNew.setGender(Gender.valueOf(result.getString("gender")));
+            customerNew.setEmail(result.getString("email"));
+            customerNew.setFirstName(result.getString("firstName"));
+            customerNew.setLastName(result.getString("lastName"));
+            customerNew.setPhoneNumber(result.getString("phoneNumber"));
+            customerNew.setMatricule(result.getString("matricule"));
+
+            UserAccount userAccount;
+            UserAccountDao userAccountDao = new UserAccountDao();
+            userAccount = userAccountDao.findById(result.getLong("idUserAccount"));
+            customerNew.setUserAccount(userAccount);
+
+            WalletDao walletDao = new WalletDao();
+            Wallet wallet = walletDao.readWallet(result.getLong("idWallet"));
+            customerNew.setWallet(wallet);
+
+            return customerNew;
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
 

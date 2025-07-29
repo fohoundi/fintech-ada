@@ -1,5 +1,6 @@
-package UseCases;
+package services;
 
+import dao.AdminDao;
 import model.*;
 import model.enumaration.compteType;
 import utils.DisplayUtil;
@@ -12,7 +13,13 @@ import java.util.Scanner;
 
 import static utils.DisplayUtil.successMsg;
 
-public class AdminUseCases {
+public class AdminService {
+
+    public Admin register(Admin admin){
+        AdminDao adminDao = new AdminDao();
+        admin = adminDao.createAdmin(admin);
+        return admin;
+    }
 
     public static void getCustomers(){
         List<Customer> customers = Stock.getCustomerList();
