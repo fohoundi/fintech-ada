@@ -17,8 +17,10 @@ public class AdminService {
 
     private final  static CustomerService customerService = new CustomerService();
     private final static AdminDao adminDao = new AdminDao();
+    private final static MarchandService marchantService = new MarchandService();
 
     public Admin register(Admin admin){
+        admin.setPrivileges(List.of("read","write"));
         admin = adminDao.createAdmin(admin);
         return admin;
     }
@@ -54,7 +56,7 @@ public class AdminService {
     }
 
     public  void getMerchants(){
-        List<Marchant> marchants = Stock.getMarchantList();
+        List<Marchant> marchants = marchantService.findAll();
         if (marchants.isEmpty()){
             DisplayUtil.display(" Pas de marchants enregistres pour le moment ");
         }else {
@@ -168,9 +170,9 @@ public class AdminService {
         //regqrder compte type et supprimer user de base
         switch (compteType){
             case CUSTOMER -> {
-                Customer customer = customerService.findByLogin(userAccount.getId());
+                Customer customer = (Customer) customerService.findByLogin(userAccount.getId());
                 System.out.println("id du client : "+customer.getId());
-                customerService.delete(customer.getId());
+                customerService.deleteById(customer.getId());
                 user = (User) customer;
 
 

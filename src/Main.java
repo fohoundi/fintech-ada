@@ -1,11 +1,6 @@
-import dao.*;
-import model.*;
-import model.enumaration.compteType;
 import services.MainService;
 
 import java.util.Scanner;
-
-import static services.Menu.mainMenu;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.

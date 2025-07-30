@@ -176,6 +176,9 @@ public class CustomerDao {
 
             WalletDao walletDao = new WalletDao();
             Wallet wallet = walletDao.readWallet(result.getLong("idWallet"));
+            if (wallet == null) {
+                throw new NullPointerException("Le portefeuille lié au client est introuvable.");
+            }
             customerNew.setWallet(wallet);
 
             return customerNew;

@@ -1,49 +1,56 @@
 package services;
 
 import dao.CustomerDao;
+import dao.WalletDao;
 import model.Customer;
+import model.Marchant;
 import model.User;
+import model.Wallet;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerService {
+public class CustomerService implements UserServiceInterface <Customer>{
+    private final static CustomerDao customerDao = new CustomerDao();
 
-    public Customer register(Customer customer) {
-        CustomerDao customerDao = new CustomerDao();
-        customer = customerDao.createCustomer(customer);
-        return customer;
+    @Override
+    public Customer register(Customer user) {
+        user = customerDao.createCustomer(user);
+        return user;
     }
 
-
-    public Customer update(Customer customer) {
-        CustomerDao customerDao = new CustomerDao();
-        customer = customerDao.updateCustomer(customer);
-        return customer;
+    @Override
+    public Customer update(Customer user) {
+        user = customerDao.updateCustomer( user);
+        return user;
     }
 
-
+    @Override
     public Customer findById(Long id) {
-        CustomerDao customerDao = new CustomerDao();
         return customerDao.findCustomerById(id);
     }
 
+    @Override
     public Customer findByLogin(Long id) {
-        CustomerDao customerDao = new CustomerDao();
-        return customerDao.findCustomerByLogin(id);
+        Customer customer = customerDao.findCustomerByLogin(id);
+        return customer;
     }
 
-
+    @Override
     public List<Customer> findAll() {
-        CustomerDao customerDao = new CustomerDao();
         return customerDao.findAllCustomers();
     }
 
-    public void delete(Long id){
-        CustomerDao customerDao = new CustomerDao();
+    @Override
+    public void deleteById(Long id) {
         customerDao.deleteCustomerById(id);
     }
-    public void deleteByLogin(Long id){
-        CustomerDao customerDao = new CustomerDao();
+
+    @Override
+    public void deleteByLogin(Long id) {
         customerDao.deleteCustomerByLogin(id);
     }
+
+
+
 }

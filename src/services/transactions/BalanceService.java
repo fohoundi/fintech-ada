@@ -1,9 +1,7 @@
-package services;
+package services.transactions;
 
 import dao.WalletDao;
-import model.User;
 import model.Wallet;
-import services.transactions.TransactionAction;
 import utils.DisplayUtil;
 
 import java.math.BigDecimal;
@@ -64,7 +62,7 @@ public class BalanceService  implements TransactionAction {
         wallet = walletDao.updateWallet(wallet);
 
         if (wallet != null) {
-            DisplayUtil.display("Retrait effectué avec succès");
+            DisplayUtil.display("Depot effectué avec succès");
         } else {
             DisplayUtil.display("Échec de l'opération");
         }

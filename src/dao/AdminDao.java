@@ -32,8 +32,10 @@ public class AdminDao {
         try {
             PreparedStatement statement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             statement = setStatementProps(statement,admin);
+            statement.executeUpdate();
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                System.out.println(generatedKeys);
                 if (generatedKeys.next()) {
                     admin.setId(generatedKeys.getLong(1));
                 } else {

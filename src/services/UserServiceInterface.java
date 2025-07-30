@@ -1,19 +1,22 @@
-    package services;
+package services;
 
-    import model.Customer;
-    import model.User;
+import model.User;
 
-    import java.util.List;
+import java.util.List;
 
-    public interface UserServiceInterface {
+public interface UserServiceInterface<T extends User> {
 
-        public User register(User user);
+    T register(T user);
 
-        Customer register(Customer customer);
+    T update(T user);
 
-        public User update(User user);
+    T findById(Long id);
 
-        public User findById(String id);
+    T findByLogin(Long id);
 
-        public List<User> findAll();
-    }
+    List<T> findAll();
+
+    void deleteById(Long id);
+
+    void deleteByLogin(Long id);
+}

@@ -1,10 +1,8 @@
 package dao;
 
-import model.Customer;
 import model.Marchant;
 import model.UserAccount;
 import model.Wallet;
-import model.enumaration.Gender;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,6 +15,7 @@ public class MerchantDao {
     private static final String UPDATE_BY_ID = "UPDATE Merchant SET matricule=?, lastname=?, firstname=?, phoneNumber=?, email=?, localisation=?, idUserAccount=?, idWallet=? WHERE id=?";
     private static final String DELETE_BY_ID = "DELETE FROM Merchant WHERE id=?";
     private static final String READ_BY_ID = "SELECT * FROM Merchant WHERE id=?";
+    private static final String READ_BY_LOGIN = "SELECT * FROM Merchant WHERE idUserAccount=?";
     private static final String READ_ALL = "SELECT * FROM Merchant";
     private static final Connection connection;//format de l'url
 
@@ -51,7 +50,7 @@ public class MerchantDao {
         }
     }
 
-    public void updateMarchant(Marchant marchant){
+    public Marchant updateMarchant(Marchant marchant){
         try {
 
             PreparedStatement statement = connection.prepareStatement(UPDATE_BY_ID);
@@ -67,6 +66,7 @@ public class MerchantDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return marchant;
     }
 
 
@@ -89,6 +89,17 @@ public class MerchantDao {
     public Marchant findMarchantById(Long id){
         try {
             PreparedStatement statement = connection.prepareStatement(READ_BY_ID);
+            statement.setLong(1,id);
+            return getMarchand(statement);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Marchant findMarchantByLogin(Long id){
+        try {
+            PreparedStatement statement = connection.prepareStatement(READ_BY_LOGIN);
             statement.setLong(1,id);
             return getMarchand(statement);
 

@@ -5,6 +5,7 @@ import model.BasicInfo;
 import model.Customer;
 import model.User;
 import model.enumaration.compteType;
+import services.transactions.BalanceService;
 import utils.DisplayUtil;
 import utils.InputUtils;
 import data.Stock;
@@ -12,7 +13,7 @@ import data.Stock;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
-public class Menu {
+public class Menu_old {
 
     //creation de l admin et d'un client a l'initialisation de l'app
     public static void initApp(){

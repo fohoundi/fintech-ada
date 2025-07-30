@@ -36,7 +36,12 @@ public class UserAccountDao {
         try {
 
             PreparedStatement statement =  connection.prepareStatement(INSERT,Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1,userAccount.getCompteType().name());
+            // statement.setString(1,userAccount.getCompteType().name());
+            String type = (userAccount.getCompteType() != null)
+                    ? userAccount.getCompteType().name()
+                    : "CUSTOMER";
+            statement.setString(1, type);
+
             statement.setString(2,userAccount.getLogin());//
             statement.setString(3,userAccount.getPassword());//
             statement.executeUpdate();
@@ -60,9 +65,9 @@ public class UserAccountDao {
 
         try {
             PreparedStatement statement = connection.prepareStatement(UPDATE_BY_LOGIN);
-            statement.setString(1,userAccount.getCompteType().name());
-            statement.setString(2,userAccount.getLogin());//
-            statement.setString(3,userAccount.getPassword());//
+            statement.setString(1,userAccount.getLogin());//
+            statement.setString(2,userAccount.getPassword());//
+            statement.setString(3,userAccount.getCompteType().name());
             statement.setString(4, userAccount.getLogin());
             statement.executeUpdate();
             return userAccount;

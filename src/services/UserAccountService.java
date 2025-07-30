@@ -6,6 +6,7 @@ import data.Stock;
 import model.BasicInfo;
 import model.Customer;
 import model.UserAccount;
+import model.enumaration.compteType;
 import utils.DisplayUtil;
 
 import java.util.List;
@@ -60,8 +61,9 @@ public class UserAccountService {
 
 
     /********A IMPLEMENTER *********/
-    public UserAccount updateUser(String login, String password ){
-        return null;
+    public UserAccount updateUser(UserAccount userAccount ){
+        UserAccountDao userAccountDao = new UserAccountDao();
+        return userAccountDao.updateUserAccount(userAccount);
     }
 
 
