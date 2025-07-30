@@ -24,20 +24,26 @@ public class CustomerService {
 
     public Customer findById(Long id) {
         CustomerDao customerDao = new CustomerDao();
-        Customer customer = customerDao.findCustomerById(id);
-        return customer;
+        return customerDao.findCustomerById(id);
     }
 
+    public Customer findByLogin(Long id) {
+        CustomerDao customerDao = new CustomerDao();
+        return customerDao.findCustomerByLogin(id);
+    }
 
 
     public List<Customer> findAll() {
         CustomerDao customerDao = new CustomerDao();
-        List<Customer> customers = customerDao.findAllCustomers();
-        return customers;
+        return customerDao.findAllCustomers();
     }
 
     public void delete(Long id){
         CustomerDao customerDao = new CustomerDao();
         customerDao.deleteCustomerById(id);
+    }
+    public void deleteByLogin(Long id){
+        CustomerDao customerDao = new CustomerDao();
+        customerDao.deleteCustomerByLogin(id);
     }
 }

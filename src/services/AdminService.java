@@ -15,14 +15,21 @@ import static utils.DisplayUtil.successMsg;
 
 public class AdminService {
 
+    private final  static CustomerService customerService = new CustomerService();
+    private final static AdminDao adminDao = new AdminDao();
+
     public Admin register(Admin admin){
-        AdminDao adminDao = new AdminDao();
         admin = adminDao.createAdmin(admin);
         return admin;
     }
 
-    public static void getCustomers(){
-        List<Customer> customers = Stock.getCustomerList();
+    public Admin findByLogin(Long id){
+        return adminDao.findadminByLogin(id);
+    }
+
+    public  void getCustomers(){
+        List<Customer> customers = customerService.findAll();
+
         if (customers.isEmpty()){
             DisplayUtil.display(" Pas de clients enregistres pour le moment ");
         }else {
@@ -46,7 +53,7 @@ public class AdminService {
 
     }
 
-    public static void getMerchants(){
+    public  void getMerchants(){
         List<Marchant> marchants = Stock.getMarchantList();
         if (marchants.isEmpty()){
             DisplayUtil.display(" Pas de marchants enregistres pour le moment ");
@@ -71,21 +78,22 @@ public class AdminService {
 
     }
 
-    public static void getAdmins(){
-        List<Customer> customers = Stock.getCustomerList();
-        if (customers.isEmpty()){
+    public  void getAdmins(){
+
+        List<Admin> admins = adminDao.findAll();
+        if (admins.isEmpty()){
             DisplayUtil.display(" Pas d'admins enregistres pour le moment");
         }else {
             DisplayUtil.display("============================================================");
             DisplayUtil.display("| NOM | PRENOMS | EMAIL | NUMERO DE TELEPHONE | PRIVILEGES | ");
             DisplayUtil.display("============================================================");
-            for (Customer customer : customers){
+            for (Admin admin : admins){
                 System.out.printf("= %s | %s | %s | %s | %s =%n",
-                        customer.getFirstName(),
-                        customer.getLastName(),
-                        customer.getEmail(),
-                        customer.getPhoneNumber(),
-                        InputUtils.format_FCFA(customer.getWallet().getBalance())
+                        admin.getFirstName(),
+                        admin.getLastName(),
+                        admin.getEmail(),
+                        admin.getPhoneNumber()
+                        // A terminer
 
                 );
                 DisplayUtil.display("----------------------------------------------------------");
@@ -151,18 +159,38 @@ public class AdminService {
 
 
 //    //promouvoir un simple user en admin
-//    public static void promoteUser (String idStr, compteType type){
-//        Long id = Long.parseLong(idStr);
-//
-//        List<BasicInfo> Users = Stock.getInfoList();
-//        for(BasicInfo user : Users){
-//            if (user.getUserAccount().getLogin().equals(login) && user.getUserAccount().getPassword().equals(mdp)){
-//                return user;
-//            }
-//        }
-//        return null;
-//        user.getUserAccount().setCompteType(type);
-//    }
+    public static void promoteUser (UserAccount userAccount){
+        //recuperer login
+        compteType compteType = userAccount.getCompteType();
+        System.out.println(userAccount.getLogin());
+
+        User user = new User();
+        //regqrder compte type et supprimer user de base
+        switch (compteType){
+            case CUSTOMER -> {
+                Customer customer = customerService.findByLogin(userAccount.getId());
+                System.out.println("id du client : "+customer.getId());
+                customerService.delete(customer.getId());
+                user = (User) customer;
+
+
+                break;
+            }
+            default -> {
+                return;
+            }
+
+        }
+
+        //
+        // ajouter admin
+        Admin admin = new Admin(userAccount, user.getLastName(), user.getFirstName(), user.getPhoneNumber(), user.getEmail());
+        admin.setPrivileges(List.of("read","write"));
+        adminDao.createAdmin(admin);
+        System.out.println("Promotion accordee !");
+
+
+    }
 
     //suprimer un user
     public static void deleteUser(User user){

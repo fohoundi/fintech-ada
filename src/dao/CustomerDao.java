@@ -15,7 +15,9 @@ public class CustomerDao {
     private static final String INSERT = "INSERT INTO Customer (matricule,lastname,firstname ,phoneNumber,email,gender,idUserAccount,idWallet) VALUES(?,?,?,?,?,?,?,?)";
     private static final String UPDATE_BY_ID = "UPDATE Customer SET matricule=?, lastname=?, firstname=?, phoneNumber=?, email=?, gender=?, idUserAccount=?, idWallet=? WHERE id=?";
     private static final String DELETE_BY_ID = "DELETE FROM Customer WHERE id=?";
+    private static final String DELETE_BY_LOGIN = "DELETE FROM Customer WHERE idUserAccount=?";
     private static final String READ_BY_ID = "SELECT * FROM Customer WHERE id=?";
+    private static final String READ_BY_LOGIN = "SELECT * FROM Customer WHERE idUserAccount=?";
     private static final String READ_ALL = "SELECT * FROM Customer ";
     private static final Connection connection;//format de l'url
 
@@ -84,10 +86,33 @@ public class CustomerDao {
             throw new RuntimeException(e);
         }
     }
+    public void deleteCustomerByLogin(Long id){
+        try {
+            PreparedStatement statement = connection.prepareStatement(DELETE_BY_LOGIN);
+            statement.setLong(1,id);
+
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Erreur de requete, aucune ligne n'a ete modifiee.");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public Customer findCustomerById(Long id){
         try {
             PreparedStatement statement = connection.prepareStatement(READ_BY_ID);
+            statement.setLong(1,id);
+            return getCustomer(statement);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public Customer findCustomerByLogin(Long id){
+        try {
+            PreparedStatement statement = connection.prepareStatement(READ_BY_LOGIN);
             statement.setLong(1,id);
             return getCustomer(statement);
         } catch (SQLException e) {
@@ -154,9 +179,7 @@ public class CustomerDao {
             customerNew.setWallet(wallet);
 
             return customerNew;
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
+        } catch (IllegalArgumentException | SQLException e) {
             throw new RuntimeException(e);
         }
     }

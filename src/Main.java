@@ -1,6 +1,7 @@
 import dao.*;
 import model.*;
 import model.enumaration.compteType;
+import services.MainService;
 
 import java.util.Scanner;
 
@@ -13,8 +14,8 @@ public class Main {
     public static void main(String[] args) {
         //initApp();//creation des premiers users pour les tests
 
-        UserAccount userAccount = new UserAccount(compteType.MERCHANT,"etze","29999999");
-        UserAccountDao userAccountDao = new UserAccountDao();
+       // UserAccount userAccount = new UserAccount(compteType.MERCHANT,"etze","29999999");
+       // UserAccountDao userAccountDao = new UserAccountDao();
         //userAccountDao.createUser(userAccount);
 
       /*  userAccount.setLogin("miol");
@@ -29,7 +30,7 @@ public class Main {
         List<UserAccount> users = userAccountDao.findAll();
         System.out.println(users.size());
         */
-        userAccountDao.deleteUserAccount(39L);
+       // userAccountDao.deleteUserAccount(39L);
         /* Test Wallet */
             /*Wallet wallet = new Wallet();
             WalletDao walletDao = new WalletDao();
@@ -114,11 +115,11 @@ public class Main {
 
 
         final Scanner scanner = new Scanner(System.in); //declaration du scanner pour les saisies de l'utilisateur
-
+        MainService mainService = new MainService();
         boolean run = true;
 
         while (run){    //boucle d'affichage du menu principal
-            run= mainMenu(scanner);
+            run= mainService.mainMenu(scanner);
         }
     }
 }

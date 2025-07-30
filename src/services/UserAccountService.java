@@ -9,20 +9,21 @@ import model.UserAccount;
 import utils.DisplayUtil;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class UserAccountService {
 
     public UserAccount register(UserAccount userAccount){
         UserAccountDao userAccountDao = new UserAccountDao();
-        UserAccount newUser = userAccountDao.createUser(userAccount);
-        return newUser;
+        return userAccountDao.createUser(userAccount);
     }
 
     public  UserAccount login (String login, String password ){
         UserAccountDao userAccountDao = new UserAccountDao();
-        UserAccount user = userAccountDao.findByLogin(login);
-        if (user != null && user.getPassword()==password){
+        UserAccount user;
+        user = userAccountDao.findByLogin(login);
+        if (user != null && Objects.equals(user.getPassword(), password)){
             user.setConnected(true);
             return user;
         }else {

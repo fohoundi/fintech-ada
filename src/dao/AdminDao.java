@@ -15,6 +15,7 @@ public class AdminDao {
     private static final String UPDATE = "UPDATE Admin SET matricule=?, lastname=?, firstname=?, phoneNumber=?, email=?, idUserAccount=?, privilege=? WHERE idUserAccount=?";
     private static final String DELETE_BY_ID = "DELETE FROM Admin WHERE id=?";
     private static final String READ_BY_ID = "SELECT * FROM Admin WHERE id=?";
+    private static final String READ_BY_LOGIN = "SELECT * FROM Admin WHERE idUserAccount=?";
     private static final String READ_ALL = "SELECT * FROM Admin";
 
     private static final Connection connection;//format de l'url
@@ -90,6 +91,16 @@ public class AdminDao {
             throw new RuntimeException(e);
         }
     }
+    public Admin findadminByLogin (Long id){
+        try {
+            PreparedStatement statement = connection.prepareStatement(READ_BY_LOGIN);
+            statement.setLong(1,id);
+            return getAdmin(statement);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public List<Admin> findAll(){
         try {
@@ -138,8 +149,8 @@ public class AdminDao {
     private Admin mappingAdminFromResultSet(ResultSet result) throws SQLException {
         Admin admin = new Admin();
         try {
-            admin.setPrivileges(Collections.singletonList(result.getString("privileges")));
-            admin.setPrivileges(Arrays.asList(result.getString("privileges").split(",\\s*")));
+            admin.setPrivileges(Collections.singletonList(result.getString("privilege")));
+            admin.setPrivileges(Arrays.asList(result.getString("privilege").split(",\\s*")));
             admin.setEmail(result.getString("email"));
             admin.setFirstName(result.getString("firstName"));
             admin.setLastName(result.getString("lastName"));

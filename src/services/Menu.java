@@ -87,12 +87,12 @@ public class Menu {
             switch (choix){
                 case "1":{
                     DisplayUtil.loading("chargement de la liste");
-                    AdminService.getCustomers();
+             //       AdminService.getCustomers();
                     break;
                 }
                 case "2":{
                     DisplayUtil.loading("chargement de la liste");
-                    AdminService.getMerchants();
+               //     AdminService.getMerchants();
                     break;
 
                 }
@@ -150,7 +150,9 @@ public class Menu {
 
     // Afficher le solde du user ( client et marchand
     public static String showBalance(User user){
-        return InputUtils.format_FCFA(BalanceUseCases.getBalance(user));
+        BalanceService balanceService = new BalanceService();
+
+        return InputUtils.format_FCFA(balanceService.getBalance(user.getWallet()));
     }
 
 
@@ -164,12 +166,13 @@ public class Menu {
             BigDecimal montant = new BigDecimal(montantStr);
             switch (operation){
                 case "retrait": {
-                    BalanceUseCases.retrait((User) user, montant);
+                    BalanceService balanceService = new BalanceService();
+                    balanceService.retrait(user.getWallet(), montant);
                     break;
 
                 }
                 case "depot": {
-                    BalanceUseCases.depot((User) user, montant);
+                   // BalanceService.depot((User) user, montant);
                     DisplayUtil.display("operation effectuee avec succes !");
                     break;
                 }
