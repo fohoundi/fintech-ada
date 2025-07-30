@@ -3,6 +3,9 @@ package model;
 import model.enumaration.Gender;
 import model.enumaration.compteType;
 import data.Stock;
+import services.transactions.TransactionAction;
+
+import java.math.BigDecimal;
 
 public class Customer  extends User {
 
@@ -18,6 +21,9 @@ public class Customer  extends User {
     public Customer() {
         super();
     }
+    public Customer(TransactionAction transactionAction) {
+        super( transactionAction);
+    }
     public Customer(UserAccount userAccount,Wallet wallet, String lastName, String firstName, String phoneNumber, String email,Gender gender){
         super(userAccount,lastName,firstName, phoneNumber,email, wallet);
         this.gender = gender;
@@ -30,5 +36,20 @@ public class Customer  extends User {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public BigDecimal getBalance(Wallet wallet) {
+        return super.getBalance(wallet);
+    }
+
+    @Override
+    public void retrait(Wallet wallet, BigDecimal montant) {
+        transactionAction.retrait(wallet,montant);
+    }
+
+    @Override
+    public void depot(Wallet wallet, BigDecimal montant) {
+        transactionAction.depot(wallet,montant);
     }
 }

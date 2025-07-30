@@ -3,18 +3,21 @@ package services;
 import dao.WalletDao;
 import model.User;
 import model.Wallet;
+import services.transactions.TransactionAction;
 import utils.DisplayUtil;
 
 import java.math.BigDecimal;
 
-public class BalanceService {
+public class BalanceService  implements TransactionAction {
     private final WalletDao walletDao = new WalletDao();
 
+    @Override
     public Wallet create(Wallet wallet){
         wallet = walletDao.createWallet(wallet);
         return wallet;
     }
 
+    @Override
     public  void retrait(Wallet wallet, BigDecimal montant){
 
 
@@ -41,14 +44,14 @@ public class BalanceService {
 
     }
 
-
+    @Override
     public  BigDecimal getBalance(Wallet wallet){
 
         wallet = walletDao.readWallet(wallet.getId());
         return wallet.getBalance();
     }
 
-
+    @Override
     public  void depot(Wallet wallet,  BigDecimal montant){
 
         if (montant.compareTo(BigDecimal.ZERO) <= 0) {

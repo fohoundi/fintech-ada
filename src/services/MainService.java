@@ -13,9 +13,9 @@ public class MainService {
     private static final BalanceService balanceService = new BalanceService();
     private static final UserAccountService userAccountService = new UserAccountService();
     private static final CustomerService customerService = new CustomerService();
-    private static final  AdminService adminService = new AdminService();
+    private static final AdminService adminService = new AdminService();
 
-    public  boolean mainMenu(Scanner scanner){
+    public boolean mainMenu(Scanner scanner){
         DisplayUtil.display("=== BIENVENU SUR FINTECH ADA ! === ");
         DisplayUtil.display("=== Choisissez une option :=== ");
         DisplayUtil.display("1 | s'inscrire ");
@@ -25,32 +25,31 @@ public class MainService {
         String choix = String.valueOf(scanner.nextInt());
         scanner.nextLine();
 
-        /* loading */
-       // DisplayUtil.loading("chargement");
-
         switch (choix){
-            case ("1"):{
+            case "1":{
                 registerUser();
-            }
-            case ("2"):{
-                UserAccount user = this.loginUser();
-                showMenu(user);
                 break;
             }
-            case ("0") :{
-                DisplayUtil.display("Merci d’avoir utilisé FinTech ADA. À bientôt !"); return false;
+            case "2":{
+                UserAccount user = this.loginUser();
+                if(user != null) {
+                    showMenu(user);
+                }
+                break;
+            }
+            case "0" :{
+                DisplayUtil.display("Merci d’avoir utilisé FinTech ADA. À bientôt !");
+                return false;
             }
             default:
-                DisplayUtil.display("Option invalide. Veuillez réessayer.");break;
+                DisplayUtil.display("Option invalide. Veuillez réessayer.");
+                break;
         }
 
         return true;
-
-
     }
 
-    public  void registerUser(){
-
+    public void registerUser() {
         final Scanner scanner = new Scanner(System.in);
         DisplayUtil.display(" Veuillez entrer votre Nom d'utilisateur:");
         String login = scanner.nextLine();
@@ -61,7 +60,6 @@ public class MainService {
         userAccount.setLogin(login);
         userAccount.setPassword(mdp);
 
-        UserAccountService userAccountService = new UserAccountService();
         userAccount = userAccountService.register(userAccount);
 
         DisplayUtil.display(" Veuillez entrer votre Nom:");
@@ -79,35 +77,26 @@ public class MainService {
         DisplayUtil.display("3 | marchand  ");
         String choixRole = scanner.nextLine();
 
-
-        switch (choixRole){
-            case ("1"):{
-
+        switch (choixRole) {
+            case "1": {
                 Wallet wallet = new Wallet();
                 WalletDao walletDao = new WalletDao();
                 wallet = walletDao.createWallet(wallet);
 
-                DisplayUtil.display(" Quel est votre sexe? (WOMEN|MEN");
+                DisplayUtil.display(" Quel est votre sexe? (WOMEN|MEN)");
                 Gender sexe = Gender.valueOf(scanner.nextLine());
-                Customer customer = new Customer(userAccount,wallet,nom,prenom,telephone,email,sexe);
 
-                CustomerService customerService= new CustomerService();
+                Customer customer = new Customer(userAccount, wallet, nom, prenom, telephone, email, sexe);
+                customer.setTransactionAction(balanceService);  // injection ici
                 customer = customerService.register(customer);
-
                 break;
-
             }
-            case ("2"):{
-                Admin admin = new Admin(userAccount,nom,prenom,telephone,email);
-
-                AdminService adminService = new AdminService();
+            case "2": {
+                Admin admin = new Admin(userAccount, nom, prenom, telephone, email);
                 admin = adminService.register(admin);
                 break;
-
             }
-            case ("3"):{
-
-
+            case "3": {
                 DisplayUtil.display(" Ou se situe votre magasin?");
                 String location = scanner.nextLine();
 
@@ -115,60 +104,65 @@ public class MainService {
                 WalletDao walletDao = new WalletDao();
                 wallet = walletDao.createWallet(wallet);
 
-                Marchant marchant = new Marchant(userAccount,wallet,nom,prenom,telephone,email,location);
-
+                Marchant marchant = new Marchant(userAccount, wallet, nom, prenom, telephone, email, location);
+                // tu peux injecter un service si nécessaire
                 break;
             }
             default:
+                DisplayUtil.display("Choix invalide.");
         }
-        DisplayUtil.display("Compte cree avec succes!!!");
-        DisplayUtil.display("///////////////////////////////////////");
 
+        DisplayUtil.display("Compte crée avec succès !!!");
+        DisplayUtil.display("///////////////////////////////////////");
     }
-    public  UserAccount  loginUser() {
+
+    public UserAccount loginUser() {
         final Scanner scanner = new Scanner(System.in);
-        UserAccount user = new UserAccount();
 
         DisplayUtil.display("Entrez votre username");
         String username = scanner.nextLine();
         DisplayUtil.display("Entrez votre mot de passe ");
         String password = scanner.nextLine();
 
-        user = userAccountService.login(username, password);
+        UserAccount user = userAccountService.login(username, password);
         if (user == null) {
-            DisplayUtil.display(" Informations de connection invalides ! veuillez saisir des infos correctes !");
+            DisplayUtil.display("Informations de connection invalides ! veuillez saisir des infos correctes !");
         }
-
         return user;
     }
 
-    public  void showMenu(UserAccount user){
+    public void showMenu(UserAccount user){
         compteType accountType = user.getCompteType();
 
         switch (accountType){
             case CUSTOMER -> {
                 Customer customer = customerService.findByLogin(user.getId());
-                menuUser(customer);
-                break;
+                if (customer != null) {
+                    customer.setTransactionAction(balanceService);  // injection ici pour éviter NPE
+                    menuUser(customer);
+                } else {
+                    DisplayUtil.display("Client non trouvé.");
+                }
             }
             case MERCHANT -> {
-                break;
+                // À compléter si besoin
             }
-            case ADMIN ->{
+            case ADMIN -> {
                 Admin admin = adminService.findByLogin(user.getId());
-                menuAdmin(admin);
+                if (admin != null) {
+                    menuAdmin(admin);
+                } else {
+                    DisplayUtil.display("Admin non trouvé.");
+                }
             }
         }
-
     }
 
-    //menu du marchand et du client
-    public  void menuUser(User user){
+    public void menuUser(User user){
         final Scanner scanner = new Scanner(System.in);
         boolean actif = true;
 
         while (actif) {
-            //DisplayUtil.display("Bienvenu "+user.getFirstName());
             DisplayUtil.display("MENU :");
             DisplayUtil.display("1 | Retirer de l'argent ");
             DisplayUtil.display("2 | deposer de l'argent ");
@@ -177,22 +171,22 @@ public class MainService {
 
             String choix = scanner.nextLine();
             switch (choix){
-                case "1":makeTransaction( user.getWallet(),"retrait");break;
-                case "2":makeTransaction( user.getWallet(),"depot");break;
-                case "3":DisplayUtil.display("votre solde est : "+balanceService.getBalance(user.getWallet()));break;
+                case "1": makeTransactionBridge(user, "retrait"); break;
+                case "2": makeTransactionBridge(user, "depot"); break;
+                case "3": DisplayUtil.display("votre solde est : " + balanceService.getBalance(user.getWallet())); break;
                 case "4":{
                     DisplayUtil.display("Merci d’avoir utilisé FinTech ADA. À bientôt !");
                     actif = false;
                     break;
                 }
-                default:DisplayUtil.display("choix invalide");break;
-
+                default:
+                    DisplayUtil.display("choix invalide");
+                    break;
             }
         }
-
     }
 
-    public  void menuAdmin(Admin admin){
+    public void menuAdmin(Admin admin){
         final Scanner scanner = new Scanner(System.in);
         boolean actif = true;
         while (actif) {
@@ -202,13 +196,11 @@ public class MainService {
             DisplayUtil.display("2 | Voir la liste des Marchands ");
             DisplayUtil.display("3 | Ajouter un utilisateur ");
             DisplayUtil.display("4 | Promouvoir un utilisateur");
-//            DisplayUtil.display("5 | Supprimer un utilisateur");
             DisplayUtil.display("0 | Me deconnecter");
 
             String choix = scanner.nextLine();
             switch (choix){
                 case "1":{
-
                     DisplayUtil.loading("chargement de la liste");
                     adminService.getCustomers();
                     break;
@@ -217,7 +209,6 @@ public class MainService {
                     DisplayUtil.loading("chargement de la liste");
                     adminService.getMerchants();
                     break;
-
                 }
                 case "3":{
                     this.registerUser();
@@ -225,55 +216,52 @@ public class MainService {
                 }
                 case "4":{
                     DisplayUtil.display("Entrez le login de utilisateur que vous voulez rendre admin ");
-                    String login =scanner.nextLine();
+                    String login = scanner.nextLine();
                     UserAccount userAccount = userAccountService.findByLogin(login);
                     if (userAccount != null){
-                        System.out.println("logintrouve : "+userAccount.getLogin());
-                    }else {
+                        System.out.println("login trouve : "+userAccount.getLogin());
+                        AdminService.promoteUser(userAccount);
+                    } else {
                         System.out.println("login non trouve");
                     }
-                    assert userAccount != null;
-                    AdminService.promoteUser(userAccount);
-               }
+                    break;
+                }
                 case "0":{
                     DisplayUtil.display("Merci d’avoir utilisé FinTech ADA. À bientôt !");
                     actif = false;
                     break;
                 }
-                default:DisplayUtil.display("choix invalide");
-
-
+                default:
+                    DisplayUtil.display("choix invalide");
             }
         }
-
     }
 
-    public static void makeTransaction(Wallet wallet ,String operation){
+    public static void makeTransactionBridge(User user, String operation) {
         final Scanner scanner = new Scanner(System.in);
 
         DisplayUtil.display("Entrez le montant :");
         String montantStr = scanner.nextLine();
+
         try {
             BigDecimal montant = new BigDecimal(montantStr);
-            switch (operation){
 
-                case "retrait": {
-                    balanceService.retrait(wallet, montant);
+            switch (operation.toLowerCase()) {
+                case "retrait":
+                    user.retrait(user.getWallet(), montant);
                     break;
-                }
 
-                case "depot": {
-                    balanceService.depot(wallet, montant);
+                case "depot":
+                    user.depot(user.getWallet(), montant);
                     break;
-                }
-                default: DisplayUtil.display("operation invalide");break;
+
+                default:
+                    DisplayUtil.display("Opération invalide");
             }
 
         } catch (NumberFormatException e) {
-            System.out.println("Montant invalide. Veuillez entrer un nombre valide.");
+            DisplayUtil.display("Montant invalide. Veuillez entrer un nombre valide.");
         }
-
-
     }
 
 }

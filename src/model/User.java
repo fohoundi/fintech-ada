@@ -1,8 +1,13 @@
 package model;
 
 import model.enumaration.compteType;
+import services.transactions.TransactionAction;
+
+import java.math.BigDecimal;
 
 public class User extends BasicInfo {
+
+    protected TransactionAction transactionAction;
 
     private String profileImage;
 
@@ -21,6 +26,10 @@ public class User extends BasicInfo {
         this.wallet = wallet;
 
     }
+    public User(TransactionAction transactionAction) {
+        super();
+        this.transactionAction = transactionAction;
+    }
 
     public User() {
         super();
@@ -37,11 +46,21 @@ public class User extends BasicInfo {
     public String getProfileImage() {
         return profileImage;
     }
+    public void setTransactionAction(TransactionAction transactionAction) {
+        this.transactionAction = transactionAction;
+    }
 
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
 
+    public void retrait(Wallet wallet, BigDecimal montant){
+
+    }
+    public BigDecimal getBalance(Wallet wallet){return null;}
+    public void depot(Wallet wallet,  BigDecimal montant){
+
+    }
 
 
 }
