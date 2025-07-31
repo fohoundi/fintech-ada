@@ -1,5 +1,6 @@
 package dao;
 
+import common.ConnectionSingleton;
 import model.Customer;
 import model.UserAccount;
 import model.Wallet;
@@ -19,15 +20,8 @@ public class CustomerDao {
     private static final String READ_BY_ID = "SELECT * FROM Customer WHERE id=?";
     private static final String READ_BY_LOGIN = "SELECT * FROM Customer WHERE idUserAccount=?";
     private static final String READ_ALL = "SELECT * FROM Customer ";
-    private static final Connection connection;//format de l'url
+    private static final Connection connection = ConnectionSingleton.getInstance().getConnection();
 
-    static {
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/fintechAda","root","root");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public Customer createCustomer(Customer customer){
         try {

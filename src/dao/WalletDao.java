@@ -1,5 +1,6 @@
 package dao;
 
+import common.ConnectionSingleton;
 import model.Customer;
 import model.Wallet;
 import model.enumaration.Gender;
@@ -14,15 +15,7 @@ public class WalletDao {
     private static final String UPDATE = "UPDATE Wallet SET balance=? WHERE id=?";
     private static final String DELETE = "DELETE FROM Wallet WHERE id=?";
     private static final String READ = "SELECT * FROM Wallet WHERE id=?";
-    private static final Connection connection;//format de l'url
-
-    static {
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/fintechAda","root","root");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private static final Connection connection = ConnectionSingleton.getInstance().getConnection();
 
     public Wallet createWallet(Wallet wallet) {
         try {

@@ -1,5 +1,6 @@
 package dao;
 
+import common.ConnectionSingleton;
 import model.UserAccount;
 import model.enumaration.compteType;
 
@@ -15,16 +16,8 @@ public class UserAccountDao {
     private static final String READ_BY_LOGIN = "SELECT * FROM UserAccount WHERE login=?";
     private static final String READ_BY_ID = "SELECT * FROM UserAccount WHERE id=?";
     private static final String READ_ALL = "SELECT * FROM UserAccount ";
-    private static final Connection connection;
+    private static final Connection connection = ConnectionSingleton.getInstance().getConnection();
 
-    static {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/fintechAda","root","root");
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 
     public  UserAccount createUser(UserAccount userAccount){

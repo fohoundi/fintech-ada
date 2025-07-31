@@ -24,11 +24,11 @@ public class Customer  extends User {
     public Customer(TransactionAction transactionAction) {
         super( transactionAction);
     }
-    public Customer(UserAccount userAccount,Wallet wallet, String lastName, String firstName, String phoneNumber, String email,Gender gender){
+    public Customer(UserAccount userAccount,Wallet wallet, String lastName, String firstName, String phoneNumber, String email,Gender gender,TransactionAction transactionAction){
         super(userAccount,lastName,firstName, phoneNumber,email, wallet);
         this.gender = gender;
+        this.transactionAction = transactionAction;
     }
-
 
     public Gender getGender() {
         return gender;

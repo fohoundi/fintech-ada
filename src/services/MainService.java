@@ -1,6 +1,8 @@
 package services;
 
+import builders.CustomerBuilder;
 import dao.WalletDao;
+import facades.UserFacade;
 import model.*;
 import model.enumaration.Gender;
 import model.enumaration.compteType;
@@ -19,8 +21,14 @@ public class MainService {
     private static final AdminService adminService = new AdminService();
     private static final MarchandService marchandService = new MarchandService();
 
+    private static final UserFacade userFacade = new UserFacade();
+    private static final CustomerBuilder customerBuilder = new CustomerBuilder();
+
     public boolean mainMenu(Scanner scanner){
+        DisplayUtil.display("");
+        DisplayUtil.display("");
         DisplayUtil.display("=== BIENVENU SUR FINTECH ADA ! === ");
+        DisplayUtil.display("");
         DisplayUtil.display("=== Choisissez une option :=== ");
         DisplayUtil.display("1 | s'inscrire ");
         DisplayUtil.display("2 | s'authentifier  ");
@@ -83,7 +91,15 @@ public class MainService {
                 DisplayUtil.display("Quel est votre sexe ? (WOMEN | MEN)");
                 Gender sexe = Gender.valueOf(scanner.nextLine());
 
-                Customer customer = new Customer(userAccount, wallet, nom, prenom, telephone, email, sexe);
+                Customer customer = customerBuilder.setUserAccount(userAccount)
+                        .setEmail(email)
+                        .setLastName(nom)
+                        .setFirstname(prenom)
+                        .setPhoneNumber(telephone)
+                        .setWallet(wallet)
+                        .build();
+
+                customer.setGender(sexe);
                 //customer.setTransactionAction(balanceService); // injection du bridge
                // customer.setTransactionAction(vipBalanceService);
 
@@ -118,7 +134,6 @@ public class MainService {
         DisplayUtil.display("///////////////////////////////////////");
     }
 
-
     public UserAccount loginUser() {
         final Scanner scanner = new Scanner(System.in);
 
@@ -139,10 +154,9 @@ public class MainService {
 
         switch (accountType){
             case CUSTOMER -> {
-                Customer customer = customerService.findByLogin(user.getId());
+                Customer customer = userFacade.findCustomerById(user.getId());
                 if (customer != null) {
-                    //customer.setTransactionAction(vipBalanceService);
-                    customer.setTransactionAction(balanceService);
+                    customer.setTransactionAction(vipBalanceService); //Injection du type de Balance choisi
                     menuUser(customer);
                 } else {
                     DisplayUtil.display("Client non trouvé.");
@@ -166,6 +180,7 @@ public class MainService {
                     DisplayUtil.display("Admin non trouvé.");
                 }
             }
+            default -> throw new IllegalStateException("Unexpected value: " + accountType);
         }
     }
 

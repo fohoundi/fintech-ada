@@ -1,5 +1,6 @@
 package dao;
 
+import common.ConnectionSingleton;
 import model.*;
 import model.enumaration.Gender;
 
@@ -17,16 +18,9 @@ public class AdminDao {
     private static final String READ_BY_ID = "SELECT * FROM Admin WHERE id=?";
     private static final String READ_BY_LOGIN = "SELECT * FROM Admin WHERE idUserAccount=?";
     private static final String READ_ALL = "SELECT * FROM Admin";
+    private static final Connection connection = ConnectionSingleton.getInstance().getConnection();
 
-    private static final Connection connection;//format de l'url
 
-    static {
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/fintechAda","root","root");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public Admin createAdmin(Admin admin){
         try {

@@ -58,8 +58,8 @@ public class User extends BasicInfo {
     public void retrait(Wallet wallet, BigDecimal montant){
 
     }
-
     public BigDecimal getBalance(Wallet wallet){return null;}
+
     public void depot(Wallet wallet,  BigDecimal montant){
 
     }
