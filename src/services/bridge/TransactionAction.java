@@ -1,4 +1,4 @@
-package services.transactions;
+package services.bridge;
 
 import model.Wallet;
 

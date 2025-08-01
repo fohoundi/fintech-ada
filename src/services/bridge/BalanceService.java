@@ -1,4 +1,4 @@
-package services.transactions;
+package services.bridge;
 
 import dao.WalletDao;
 import model.Wallet;

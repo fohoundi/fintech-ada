@@ -5,7 +5,7 @@ import model.BasicInfo;
 import model.Customer;
 import model.User;
 import model.enumaration.compteType;
-import services.transactions.BalanceService;
+import services.bridge.BalanceService;
 import utils.DisplayUtil;
 import utils.InputUtils;
 import data.Stock;

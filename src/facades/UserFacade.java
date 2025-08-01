@@ -5,6 +5,8 @@ import dao.AdminDao;
 import dao.CustomerDao;
 import dao.MerchantDao;
 import dao.UserAccountDao;
+import iterators.GenericIterator;
+import iterators.UserIteratorInterface;
 import model.Customer;
 import model.Marchant;
 import model.UserAccount;
@@ -28,8 +30,8 @@ public class UserFacade {
     public Customer updateCustomer(Customer customer){ return customerDao.updateCustomer(customer);}
     public Customer findCustomerById(Long id){return customerDao.findCustomerById(id);}
     public Customer findCustomerByLogin(Long id){return customerDao.findCustomerByLogin(id);}
-    public List<Customer> findAllCustomers(){return customerDao.findAllCustomers();}
-
+    //public List<Customer> findAllCustomers(){return customerDao.findAllCustomers();}
+    public UserIteratorInterface<Customer> findAllCustomers(){return new GenericIterator<>(customerDao.findAllCustomers());} //implementation de iterator
 
 
 

@@ -1,11 +1,10 @@
 package builders;
 
 import model.Customer;
-import model.Marchant;
 import model.UserAccount;
 import model.Wallet;
 import model.enumaration.Gender;
-import services.transactions.TransactionAction;
+import services.bridge.TransactionAction;
 
 import java.util.ArrayList;
 import java.util.List;

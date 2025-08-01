@@ -6,8 +6,8 @@ import facades.UserFacade;
 import model.*;
 import model.enumaration.Gender;
 import model.enumaration.compteType;
-import services.transactions.BalanceService;
-import services.transactions.VipBalanceService;
+import services.bridge.BalanceService;
+import services.bridge.VipBalanceService;
 import utils.DisplayUtil;
 
 import java.math.BigDecimal;
@@ -155,9 +155,10 @@ public class MainService {
         switch (accountType){
             case CUSTOMER -> {
                 Customer customer = userFacade.findCustomerById(user.getId());
-                if (customer != null) {
-                    customer.setTransactionAction(vipBalanceService); //Injection du type de Balance choisi
-                    menuUser(customer);
+                Customer clone = customer.clone(); // utilisation du prototype
+                if (clone != null) {
+                    clone.setTransactionAction(balanceService); //Injection du type de Balance choisi
+                    menuUser(clone);
                 } else {
                     DisplayUtil.display("Client non trouvé.");
                 }

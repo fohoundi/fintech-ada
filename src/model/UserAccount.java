@@ -4,7 +4,7 @@ import model.enumaration.compteType;
 
 import java.util.List;
 
-public class UserAccount {
+public class UserAccount implements Cloneable{
 
     private  Long id;
 
@@ -85,4 +85,14 @@ public class UserAccount {
     }
 
 
+    @Override
+    public UserAccount clone() {
+        try {
+            UserAccount clone = (UserAccount) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

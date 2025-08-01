@@ -1,7 +1,7 @@
 package model;
 
 import model.enumaration.compteType;
-import services.transactions.TransactionAction;
+import services.bridge.TransactionAction;
 
 import java.math.BigDecimal;
 

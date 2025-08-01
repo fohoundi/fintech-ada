@@ -1,6 +1,8 @@
 package services;
 
 import dao.AdminDao;
+import facades.UserFacade;
+import iterators.UserIteratorInterface;
 import model.*;
 import model.enumaration.compteType;
 import utils.DisplayUtil;
@@ -18,6 +20,7 @@ public class AdminService {
     private final  static CustomerService customerService = new CustomerService();
     private final static AdminDao adminDao = new AdminDao();
     private final static MarchandService marchantService = new MarchandService();
+    private final static UserFacade userFacade = new UserFacade();
 
     public Admin register(Admin admin){
         admin.setPrivileges(List.of("read","write"));
@@ -29,31 +32,33 @@ public class AdminService {
         return adminDao.findadminByLogin(id);
     }
 
-    public  void getCustomers(){
-        List<Customer> customers = customerService.findAll();
+    public void getCustomers() {
+        UserIteratorInterface<Customer> customers = userFacade.findAllCustomers();
 
-        if (customers.isEmpty()){
-            DisplayUtil.display(" Pas de clients enregistres pour le moment ");
-        }else {
-            DisplayUtil.display("=======================================================");
-            DisplayUtil.display("| NOM | PRENOMS | EMAIL | NUMERO DE TELEPHONE | SOLDE |");
-            DisplayUtil.display("=======================================================");
-            for (Customer customer : customers){
-                System.out.printf("= %s | %s | %s | %s | %s =%n",
-                        customer.getFirstName(),
-                        customer.getLastName(),
-                        customer.getEmail(),
-                        customer.getPhoneNumber(),
-                        InputUtils.format_FCFA(customer.getWallet().getBalance())
-
-                );
-                DisplayUtil.display("----------------------------------------------------------");
-            }
-            DisplayUtil.display("=======================================================");
+        if (!customers.hasNext()) {
+            DisplayUtil.display("Pas de clients enregistrés pour le moment.");
+            return;
         }
 
+        DisplayUtil.display("=======================================================");
+        DisplayUtil.display("| NOM | PRENOMS | EMAIL | NUMERO DE TELEPHONE | SOLDE |");
+        DisplayUtil.display("=======================================================");
 
+        while (customers.hasNext()) {
+            Customer customer = customers.next();
+            System.out.printf("= %s | %s | %s | %s | %s =%n",
+                    customer.getFirstName(),
+                    customer.getLastName(),
+                    customer.getEmail(),
+                    customer.getPhoneNumber(),
+                    InputUtils.format_FCFA(customer.getWallet().getBalance())
+            );
+            DisplayUtil.display("----------------------------------------------------------");
+        }
+
+        DisplayUtil.display("=======================================================");
     }
+
 
     public  void getMerchants(){
         List<Marchant> marchants = marchantService.findAll();
@@ -170,7 +175,7 @@ public class AdminService {
         //regqrder compte type et supprimer user de base
         switch (compteType){
             case CUSTOMER -> {
-                Customer customer = (Customer) customerService.findByLogin(userAccount.getId());
+                Customer customer = customerService.findByLogin(userAccount.getId());
                 System.out.println("id du client : "+customer.getId());
                 customerService.deleteById(customer.getId());
                 user = (User) customer;

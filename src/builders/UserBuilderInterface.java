@@ -1,12 +1,9 @@
 package builders;
 
-import dao.WalletDao;
-import model.Customer;
 import model.User;
 import model.UserAccount;
 import model.Wallet;
-import model.enumaration.Gender;
-import services.transactions.TransactionAction;
+import services.bridge.TransactionAction;
 
 public interface UserBuilderInterface <T extends User> {
     UserBuilderInterface setFirstname(String firstName );

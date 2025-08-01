@@ -3,11 +3,11 @@ package model;
 import model.enumaration.Gender;
 import model.enumaration.compteType;
 import data.Stock;
-import services.transactions.TransactionAction;
+import services.bridge.TransactionAction;
 
 import java.math.BigDecimal;
 
-public class Customer  extends User {
+public class Customer  extends User implements Cloneable {
 
     private Gender gender;
 
@@ -52,4 +52,17 @@ public class Customer  extends User {
     public void depot(Wallet wallet, BigDecimal montant) {
         transactionAction.depot(wallet,montant);
     }
+
+    @Override
+    public Customer clone() {
+        try {
+            Customer cloned = (Customer) super.clone();
+            cloned.setWallet(this.getWallet().clone());
+            cloned.setUserAccount(this.getUserAccount().clone()); // idem
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Clonage échoué", e);
+        }
+    }
+
 }
