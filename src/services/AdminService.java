@@ -1,8 +1,8 @@
 package services;
 
 import dao.AdminDao;
-import facades.UserFacade;
-import iterators.UserIteratorInterface;
+import patterns.facades.UserFacade;
+import patterns.iterators.UserIteratorInterface;
 import model.*;
 import model.enumaration.compteType;
 import utils.DisplayUtil;

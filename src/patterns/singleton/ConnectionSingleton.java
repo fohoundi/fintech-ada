@@ -1,4 +1,4 @@
-package common;
+package patterns.singleton;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,7 +19,7 @@ public class ConnectionSingleton {
         }
     }
 
-    // Point d’accès au singleton
+    // Point d’accès au patterns.singleton
     public static ConnectionSingleton getInstance() {
         if (instance == null) {
             instance = new ConnectionSingleton();

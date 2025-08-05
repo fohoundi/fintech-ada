@@ -1,4 +1,4 @@
-package builders;
+package patterns.builders;
 
 import model.Customer;
 import model.UserAccount;

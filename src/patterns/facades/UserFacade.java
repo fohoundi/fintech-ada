@@ -1,14 +1,13 @@
-package facades;
+package patterns.facades;
 
-import common.ConnectionSingleton;
+import patterns.singleton.ConnectionSingleton;
 import dao.AdminDao;
 import dao.CustomerDao;
 import dao.MerchantDao;
 import dao.UserAccountDao;
-import iterators.GenericIterator;
-import iterators.UserIteratorInterface;
+import patterns.iterators.GenericIterator;
+import patterns.iterators.UserIteratorInterface;
 import model.Customer;
-import model.Marchant;
 import model.UserAccount;
 
 import java.sql.Connection;

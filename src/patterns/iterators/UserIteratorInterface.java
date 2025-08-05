@@ -1,4 +1,4 @@
-package iterators;
+package patterns.iterators;
 
 public interface UserIteratorInterface<T>{
     boolean hasNext();

@@ -1,11 +1,10 @@
 package dao;
 
-import common.ConnectionSingleton;
+import patterns.singleton.ConnectionSingleton;
 import model.Customer;
 import model.UserAccount;
 import model.Wallet;
 import model.enumaration.Gender;
-import model.enumaration.compteType;
 
 import java.sql.*;
 import java.util.ArrayList;

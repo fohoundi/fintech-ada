@@ -1,12 +1,8 @@
 package dao;
 
-import common.ConnectionSingleton;
-import model.Customer;
+import patterns.singleton.ConnectionSingleton;
 import model.Wallet;
-import model.enumaration.Gender;
-import model.enumaration.compteType;
 
-import java.math.BigDecimal;
 import java.sql.*;
 
 public class WalletDao {

@@ -1,8 +1,7 @@
 package dao;
 
-import common.ConnectionSingleton;
+import patterns.singleton.ConnectionSingleton;
 import model.*;
-import model.enumaration.Gender;
 
 import java.sql.*;
 import java.util.ArrayList;

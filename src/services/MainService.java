@@ -1,8 +1,8 @@
 package services;
 
-import builders.CustomerBuilder;
+import patterns.builders.CustomerBuilder;
 import dao.WalletDao;
-import facades.UserFacade;
+import patterns.facades.UserFacade;
 import model.*;
 import model.enumaration.Gender;
 import model.enumaration.compteType;
@@ -154,7 +154,7 @@ public class MainService {
 
         switch (accountType){
             case CUSTOMER -> {
-                Customer customer = userFacade.findCustomerById(user.getId());
+                Customer customer = userFacade.findCustomerByLogin(user.getId());
                 Customer clone = customer.clone(); // utilisation du prototype
                 if (clone != null) {
                     clone.setTransactionAction(balanceService); //Injection du type de Balance choisi

@@ -1,6 +1,6 @@
 package dao;
 
-import common.ConnectionSingleton;
+import patterns.singleton.ConnectionSingleton;
 import model.UserAccount;
 import model.enumaration.compteType;
 
